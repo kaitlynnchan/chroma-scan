@@ -2,25 +2,25 @@ package main.java.com.chromascan.model;
 
 public class Rgb {
 
-    private int redVal;
-	private int greenVal;
-	private int blueVal;
+    private int red;
+	private int green;
+	private int blue;
 
     public Rgb(int red, int green, int blue){
-        this.redVal = red;
-        this.greenVal = green;
-        this.blueVal = blue;
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
     }
 
-    public int getRedVal(){
-        return this.redVal;
+    public int getRed(){
+        return this.red;
     }
 
-    public int getGreenVal(){
-        return this.greenVal;
+    public int getGreen(){
+        return this.green;
     }
 
-    public int getBlueVal(){
-        return this.blueVal;
+    public int getBlue(){
+        return this.blue;
     }
 }
