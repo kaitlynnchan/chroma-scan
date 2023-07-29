@@ -4,48 +4,57 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 
 public class ColourEvaluator {
 
     // private String file;
-    // private int x;
-    // private int y;
+    private BufferedImage image;
+    private ArrayList<PixelPosition> pp;
+    private ArrayList<ColourBreakdown> cb;
+    private int numPos;
 
-    // public ColourEvaluator(String file, int x, int y){
-    //     this.file = file;
-    //     this.x = x;
-    //     this.y = y;
-    // }
+    // send a list of positions
+    public ColourEvaluator(String file, ArrayList<PixelPosition> pp){
+        this.image = createImage(file);
+        this.pp = pp;
+        this.cb = new ArrayList<ColourBreakdown>();
+        populateColourBreakdown();
+    }
 
-    public static void main(String[] args) {
-        String file = "resources/test-img2.png";
-        int x = 0;
-        int y = 0;
-
-        System.out.println("here1");
-        ColourEvaluator ce = new ColourEvaluator();
-
-        // Source src = new Source(file);
+    private BufferedImage createImage(String file){
         File srcImgFile;
-        BufferedImage image;
         try {
             srcImgFile = new File(file);
-            image = ImageIO.read(srcImgFile);
+            return ImageIO.read(srcImgFile); 
         } catch (IOException e) {
             System.out.println(e);
-            return;
+            return null;
         }
+    }
 
+    private void populateColourBreakdown(){
+        Iterator<PixelPosition> positions = pp.iterator();
+        while(positions.hasNext()){
+            PixelPosition p = positions.next();
+            findColour(p.getX(), p.getY());
+        }
+    }
+
+    private void findColour(int x, int y) {
         // Get data for creating colour object
-        Rgb rgbObj = ce.getRgbFromPosition(image, x, y);
-        String hex = ce.getHexFromRgb(rgbObj);
+        Rgb rgbObj = getRgbFromPosition(image, x, y);
+        String hex = getHexFromRgb(rgbObj);
         // create colour object
-        Colour colour = new Colour(rgbObj, hex);
+        // Colour colour = new Colour(rgbObj, hex);
 
-        System.out.println(colour.getRgb().getRed() + ", " + colour.getRgb().getGreen() + ", " + colour.getRgb().getBlue());
-        System.out.println(colour.getHex());
+        cb.add(new ColourBreakdown(rgbObj, hex, 100));
+
+        System.out.println(cb.get(cb.size()-1).getRgb());
+        System.out.println(cb.get(cb.size()-1).getHex());
     }
 
     private String getHexFromRgb(Rgb rgb){
@@ -57,4 +66,18 @@ public class ColourEvaluator {
         Color color = new Color(pixel, true);
         return new Rgb(color.getRed(), color.getGreen(), color.getBlue());
     }
+
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public ArrayList<PixelPosition> getPixelPosition() {
+        return pp;
+    }
+
+    public ArrayList<ColourBreakdown> getColourBreakdown() {
+        return cb;
+    }
+
+    
 }

@@ -23,4 +23,9 @@ public class Rgb {
     public int getBlue(){
         return this.blue;
     }
+
+    @Override
+    public String toString() {
+        return "(" +this.red + ", " + this.green + ", " + this.blue + ")";
+    }
 }
