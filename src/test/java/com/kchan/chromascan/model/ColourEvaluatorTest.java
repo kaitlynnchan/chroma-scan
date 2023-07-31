@@ -1,11 +1,14 @@
 package com.kchan.chromascan.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
+// import static org.junit.Assert.assertEquals;
+// import static org.junit.Assert.assertThrows;
 
 import java.io.IOException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+// import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ColourEvaluatorTest {
 
@@ -18,9 +21,9 @@ public class ColourEvaluatorTest {
         assertEquals("#C2ED6D", cb.getHex());
     }
 
-    // @Test
-    // public void failureOnCreate(){
-    //     String nullFile = "resources/test-img3.png";
-    //     assertThrows(IOException, ColourBreakdown(nullFile, 0, 0));
-    // }
+    @Test
+    public void failureOnCreate(){
+        String nullFile = "resources/test-img3.png";
+        assertThrows(IllegalArgumentException.class, () -> new ColourEvaluator(nullFile, 0, 0));
+    }
 }
