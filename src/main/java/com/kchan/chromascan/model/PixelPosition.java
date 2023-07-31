@@ -1,4 +1,4 @@
-package main.java.com.kchan.chromascan.model;
+package com.kchan.chromascan.model;
 
 public class PixelPosition {
     private int x;

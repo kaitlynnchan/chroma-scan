@@ -1,1 +1,1 @@
-package main.java.com.kchan.chromascan.model;
+package com.kchan.chromascan.model;
