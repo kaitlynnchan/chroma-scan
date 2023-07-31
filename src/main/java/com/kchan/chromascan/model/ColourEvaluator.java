@@ -2,7 +2,6 @@ package main.java.com.kchan.chromascan.model;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,6 +17,15 @@ public class ColourEvaluator {
     private int numPos;
 
     // send a list of positions
+    public ColourEvaluator(String file, int x, int y){
+        this.image = createImage(file);
+        this.pp = new ArrayList<PixelPosition>(){{
+            add(new PixelPosition(x, y));
+        }};
+        this.cb = new ArrayList<ColourBreakdown>();
+        populateColourBreakdown();
+    }
+
     public ColourEvaluator(String file, ArrayList<PixelPosition> pp){
         this.image = createImage(file);
         this.pp = pp;
@@ -26,10 +34,8 @@ public class ColourEvaluator {
     }
 
     private BufferedImage createImage(String file){
-        File srcImgFile;
         try {
-            srcImgFile = new File(file);
-            return ImageIO.read(srcImgFile); 
+            return ImageIO.read(getClass().getResource(file)); 
         } catch (IOException e) {
             System.out.println(e);
             return null;
@@ -46,7 +52,7 @@ public class ColourEvaluator {
 
     private void findColour(int x, int y) {
         // Get data for creating colour object
-        Rgb rgbObj = getRgbFromPosition(image, x, y);
+        Rgb rgbObj = getRgbFromPosition(this.image, x, y);
         String hex = getHexFromRgb(rgbObj);
         // create colour object
         // Colour colour = new Colour(rgbObj, hex);
