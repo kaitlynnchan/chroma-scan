@@ -1,4 +1,4 @@
-package main.java.com.chromascan.model;
+package main.java.com.kchan.chromascan.model;
 
 /**
  * Models information of the breakdown of a Colour.

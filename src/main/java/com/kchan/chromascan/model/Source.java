@@ -1,3 +1,4 @@
+// package main.java.com.kchan.chromascan.model;
 // package main.java.com.chromascan.model;
 
 // import java.awt.Color;

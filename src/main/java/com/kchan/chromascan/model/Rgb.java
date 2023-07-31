@@ -1,4 +1,4 @@
-package main.java.com.chromascan.model;
+package main.java.com.kchan.chromascan.model;
 
 public class Rgb {
 
