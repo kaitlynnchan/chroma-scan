@@ -9,8 +9,8 @@ public class ColourBreakdown extends Colour {
 
     private double percentage;
 
-    public ColourBreakdown(Rgb rgb, String hex, double percentage){
-        super(rgb, hex);
+    public ColourBreakdown(Rgb rgb, String hex, String name, double percentage){
+        super(rgb, hex, name);
         this.percentage = percentage;
     }
 

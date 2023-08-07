@@ -1,3 +1,5 @@
 /target
 /lib
 .vscode
+.gitattributes
+__pycache__

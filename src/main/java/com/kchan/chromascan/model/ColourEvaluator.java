@@ -1,5 +1,12 @@
 package com.kchan.chromascan.model;
 
+import org.python.core.Py;
+import org.python.core.PyInstance;
+import org.python.core.PyObject;
+import org.python.core.PyString;
+import org.python.core.PySystemState;
+import org.python.util.PythonInterpreter;  
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -56,8 +63,9 @@ public class ColourEvaluator {
         String hex = getHexFromRgb(rgbObj);
         // create colour object
         // Colour colour = new Colour(rgbObj, hex);
+        String name = createName(hex);
 
-        cb.add(new ColourBreakdown(rgbObj, hex, 100));
+        cb.add(new ColourBreakdown(rgbObj, hex, name, 100));
 
         System.out.println(cb.get(cb.size()-1).getRgb());
         System.out.println(cb.get(cb.size()-1).getHex());
@@ -71,6 +79,16 @@ public class ColourEvaluator {
         int pixel = image.getRGB(x, y);
         Color color = new Color(pixel, true);
         return new Rgb(color.getRed(), color.getGreen(), color.getBlue());
+    }
+
+    private String createName(String hex){
+        PythonInterpreter.initialize(System.getProperties(), System.getProperties(), new String[0]);  
+        PythonInterpreter pi = new PythonInterpreter();
+        pi.execfile("src/main/java/com/kchan/chromascan/api/openai_api.py");
+        PyInstance openai = (PyInstance) pi.eval("OpenAiAPI()");
+        PyObject name = openai.invoke_ex("create_name", new PyString(hex));
+        pi.close();
+        return name.asString();
     }
 
     public BufferedImage getImage() {
