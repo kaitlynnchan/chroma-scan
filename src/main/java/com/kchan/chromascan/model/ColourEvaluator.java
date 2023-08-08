@@ -9,7 +9,13 @@ import org.python.util.PythonInterpreter;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -22,6 +28,10 @@ public class ColourEvaluator {
     private ArrayList<PixelPosition> pp;
     private ArrayList<ColourBreakdown> cb;
     private int numPos;
+
+    private static final String OPENAI_API_KEY = "YOUR_OPENAI_API_KEY";
+    private static final String API_URL = "https://api.openai.com/v1/chat/completions";
+
 
     // send a list of positions
     public ColourEvaluator(String file, int x, int y){
@@ -84,11 +94,51 @@ public class ColourEvaluator {
     private String createName(String hex){
         PythonInterpreter.initialize(System.getProperties(), System.getProperties(), new String[0]);  
         PythonInterpreter pi = new PythonInterpreter();
-        pi.execfile("src/main/java/com/kchan/chromascan/api/openai_api.py");
-        PyInstance openai = (PyInstance) pi.eval("OpenAiAPI()");
-        PyObject name = openai.invoke_ex("create_name", new PyString(hex));
+        pi.exec("import sys");
+        pi.exec("sys.path.append('src/main/java/com/kchan/chromascan')");
+        pi.exec("from api.OpenAiJython import OpenAiJython");
+        pi.exec("openai_instance = OpenAiJython()");
+        
+        // pi.execfile("src/main/java/com/kchan/chromascan/api/openai_api.py");
+        // PyInstance openai = (PyInstance) pi.eval("OpenAiAPI()");
+        // PyObject name = openai.invoke_ex("create_name", new PyString(hex));
+        PyObject name = pi.eval("openai_instance.createName(#000000)");
         pi.close();
         return name.asString();
+
+        // String requestBody = "{"
+        //     + "model='gpt-3.5-turbo',"
+        //     + "messages=["
+        //     + "{'role': 'system', 'content': 'You are a creative assistant.'},"
+        //     +      "{'role': 'user', 'content': 'Come up with a fun name that describes the color #ffffff.'}"
+        //     + "],"
+        //     + "temperature=1,"
+        //     + "max_tokens=20"
+        //     +"}";
+
+        // URL url = new URL(API_URL);
+        // HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        // connection.setRequestMethod("POST");
+        // connection.setRequestProperty("Authorization", "Bearer " + OPENAI_API_KEY);
+        // connection.setDoOutput(true);
+
+        // try (OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream())) {
+        //     writer.write(requestBody);
+        // }
+
+        // int responseCode = connection.getResponseCode();
+        // if (responseCode == HttpURLConnection.HTTP_OK) {
+        //     try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+        //         StringBuilder response = new StringBuilder();
+        //         String line;
+        //         while ((line = reader.readLine()) != null) {
+        //             response.append(line);
+        //         }
+        //         return response.toString();
+        //     }
+        // } else {
+        //     throw new IOException("API request failed with response code: " + responseCode);
+        // }
     }
 
     public BufferedImage getImage() {

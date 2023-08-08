@@ -1,10 +1,10 @@
 import os
 import openai
 
-openai.api_key = ""
+openai.api_key = "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"
 
-class OpenAiAPI:
-    
+class OpenAiJython:
+
     def create_name(colour_hex):
         print(colour_hex)
         response = openai.ChatCompletion.create(
