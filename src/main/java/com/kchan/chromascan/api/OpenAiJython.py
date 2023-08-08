@@ -17,3 +17,5 @@ class OpenAiJython:
             max_tokens=20
         )
         return response["choices"][0]["message"]["content"]
+
+print(OpenAiJython.create_name("#000000"))

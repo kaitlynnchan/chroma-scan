@@ -37,6 +37,12 @@
             <artifactId>jython-slim</artifactId>
             <version>2.7.3b1</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.theokanning.openai-gpt3-java</groupId>
+            <artifactId>service</artifactId>
+            <version>0.15.0</version>
+        </dependency>
     </dependencies>
 
     <build>

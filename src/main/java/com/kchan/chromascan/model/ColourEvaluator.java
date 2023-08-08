@@ -5,7 +5,12 @@ import org.python.core.PyInstance;
 import org.python.core.PyObject;
 import org.python.core.PyString;
 import org.python.core.PySystemState;
-import org.python.util.PythonInterpreter;  
+import org.python.util.PythonInterpreter;
+
+import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.theokanning.openai.completion.chat.ChatCompletionResult;
+import com.theokanning.openai.completion.chat.ChatMessage;
+import com.theokanning.openai.service.OpenAiService;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -16,8 +21,10 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -29,7 +36,7 @@ public class ColourEvaluator {
     private ArrayList<ColourBreakdown> cb;
     private int numPos;
 
-    private static final String OPENAI_API_KEY = "YOUR_OPENAI_API_KEY";
+    private static final String OPENAI_API_KEY = "";
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
 
 
@@ -92,53 +99,23 @@ public class ColourEvaluator {
     }
 
     private String createName(String hex){
-        PythonInterpreter.initialize(System.getProperties(), System.getProperties(), new String[0]);  
-        PythonInterpreter pi = new PythonInterpreter();
-        pi.exec("import sys");
-        pi.exec("sys.path.append('src/main/java/com/kchan/chromascan')");
-        pi.exec("from api.OpenAiJython import OpenAiJython");
-        pi.exec("openai_instance = OpenAiJython()");
+        OpenAiService service = new OpenAiService(OPENAI_API_KEY);
+        ChatCompletionRequest request = ChatCompletionRequest.builder()
+            .model("gpt-3.5-turbo")
+            .messages(
+                List.of(
+                    new ChatMessage("system", "You are a creative assistant."),
+                    new ChatMessage("user", "Come up with a fun name that describes the color #ffffff.")
+                )
+            )
+            .temperature(1.0)
+            .maxTokens(20)
+            .build();
         
-        // pi.execfile("src/main/java/com/kchan/chromascan/api/openai_api.py");
-        // PyInstance openai = (PyInstance) pi.eval("OpenAiAPI()");
-        // PyObject name = openai.invoke_ex("create_name", new PyString(hex));
-        PyObject name = pi.eval("openai_instance.createName(#000000)");
-        pi.close();
-        return name.asString();
-
-        // String requestBody = "{"
-        //     + "model='gpt-3.5-turbo',"
-        //     + "messages=["
-        //     + "{'role': 'system', 'content': 'You are a creative assistant.'},"
-        //     +      "{'role': 'user', 'content': 'Come up with a fun name that describes the color #ffffff.'}"
-        //     + "],"
-        //     + "temperature=1,"
-        //     + "max_tokens=20"
-        //     +"}";
-
-        // URL url = new URL(API_URL);
-        // HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        // connection.setRequestMethod("POST");
-        // connection.setRequestProperty("Authorization", "Bearer " + OPENAI_API_KEY);
-        // connection.setDoOutput(true);
-
-        // try (OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream())) {
-        //     writer.write(requestBody);
-        // }
-
-        // int responseCode = connection.getResponseCode();
-        // if (responseCode == HttpURLConnection.HTTP_OK) {
-        //     try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-        //         StringBuilder response = new StringBuilder();
-        //         String line;
-        //         while ((line = reader.readLine()) != null) {
-        //             response.append(line);
-        //         }
-        //         return response.toString();
-        //     }
-        // } else {
-        //     throw new IOException("API request failed with response code: " + responseCode);
-        // }
+        ChatCompletionResult response = service.createChatCompletion(request);
+        ChatMessage message = response.getChoices().get(0).getMessage();
+        System.out.println(message);
+        return message.getContent();
     }
 
     public BufferedImage getImage() {
