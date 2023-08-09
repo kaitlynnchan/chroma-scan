@@ -71,13 +71,8 @@ public class ColourEvaluator {
     private void findColour(int x, int y) {
         // Get data for creating colour object
         Rgb rgbObj = getRgbFromPosition(this.image, x, y);
-        String hex = getHexFromRgb(rgbObj);
-        // create colour object
-        // Colour colour = new Colour(rgbObj, hex);
-        String name = createName(hex);
 
-        cb.add(new ColourBreakdown(rgbObj, hex, name, 100));
-
+        cb.add(new ColourBreakdown(rgbObj, 100));
         System.out.println("RGB: " + cb.get(cb.size()-1).getRgb());
         System.out.println("Hex: " + cb.get(cb.size()-1).getHex());
         System.out.println("Name: " + cb.get(cb.size()-1).getName());
@@ -87,29 +82,6 @@ public class ColourEvaluator {
         int pixel = image.getRGB(x, y);
         Color color = new Color(pixel, true);
         return new Rgb(color.getRed(), color.getGreen(), color.getBlue());
-    }
-
-    private String getHexFromRgb(Rgb rgb){
-        return String.format("#%02X%02X%02X", rgb.getRed(), rgb.getGreen(), rgb.getBlue());
-    }
-
-    private String createName(String hex){
-        OpenAiService service = new OpenAiService(OPENAI_API_KEY);
-        ChatCompletionRequest request = ChatCompletionRequest.builder()
-            .model("gpt-3.5-turbo")
-            .messages(
-                List.of(
-                    new ChatMessage("system", "You are a creative assistant."),
-                    new ChatMessage("user", "Come up with a fun name that describes the color " + hex + ".")
-                )
-            )
-            .temperature(1.0)
-            .maxTokens(20)
-            .build();
-        
-        ChatCompletionResult response = service.createChatCompletion(request);
-        ChatMessage message = response.getChoices().get(0).getMessage();
-        return message.getContent();
     }
 
 }
