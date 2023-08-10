@@ -1,12 +1,5 @@
 package com.kchan.chromascan.model;
 
-import java.util.List;
-
-import com.theokanning.openai.completion.chat.ChatCompletionRequest;
-import com.theokanning.openai.completion.chat.ChatCompletionResult;
-import com.theokanning.openai.completion.chat.ChatMessage;
-import com.theokanning.openai.service.OpenAiService;
-
 /**
  * Models information about a Colour object
  * Parameters: Rgb object, hex, name
@@ -56,22 +49,10 @@ public class Colour {
     }
 
     private void setName(){
-        OpenAiService service = new OpenAiService(Constant.getKey(Constant.OPENAI_API_KEY));
-        ChatCompletionRequest request = ChatCompletionRequest.builder()
-            .model("gpt-3.5-turbo")
-            .messages(
-                List.of(
-                    new ChatMessage("system", "You are a creative assistant."),
-                    new ChatMessage("user", "Come up with a fun name that describes the color " + this.hex + ".")
-                )
-            )
-            .temperature(1.0)
-            .maxTokens(20)
-            .build();
-        
-        ChatCompletionResult response = service.createChatCompletion(request);
-        ChatMessage message = response.getChoices().get(0).getMessage();
-        this.name = message.getContent();
+        OpenAiWrapper wrapper = new OpenAiWrapper(1.0, 20);
+        wrapper.addMessage("system", "You are a creative assistant.");
+        wrapper.addMessage("user", "Come up with a fun name that describes the color " + this.hex + ".");
+        this.name = wrapper.getChatCompletionRequestContent();
     }
 
 }
