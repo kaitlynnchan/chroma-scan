@@ -1,22 +1,14 @@
 package com.kchan.chromascan.model;
 
-import com.theokanning.openai.completion.chat.ChatCompletionRequest;
-import com.theokanning.openai.completion.chat.ChatCompletionResult;
-import com.theokanning.openai.completion.chat.ChatMessage;
-import com.theokanning.openai.service.OpenAiService;
-
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 
 public class ColourEvaluator {
-
-    private static final String OPENAI_API_KEY = "";
 
     private BufferedImage image;
     private ArrayList<PixelPosition> pp;
