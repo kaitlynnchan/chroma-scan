@@ -6,6 +6,9 @@ package com.kchan.chromascan.model;
 import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 // import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -16,10 +19,13 @@ public class ColourEvaluatorTest {
     
     @Test
     public void successOnCreate() {
-        System.out.println("here");
         ce = new ColourEvaluator("test-img2.png", 0, 0);
         ColourBreakdown cb = ce.getColourBreakdown().get(ce.getColourBreakdown().size() - 1);
-        assertEquals("#C2ED6D", cb.getHex());
+        assertAll(
+            () -> assertEquals("#C2ED6D", cb.getHex()),
+            () -> assertEquals("(194, 237, 109)", cb.getRgb()),
+            () -> assertNotNull(cb.getName())            
+        );
     }
 
     @Test
