@@ -1,5 +1,9 @@
-package com.kchan.chromascan.model;
+package com.chromascan.model;
 
+/**
+ * RGB CLASS
+ * Illustrates information about an Rgb object.
+ */
 public class Rgb {
 
     private int red;

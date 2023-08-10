@@ -1,5 +1,10 @@
-package com.kchan.chromascan.model;
+package com.chromascan.model;
 
+/**
+ * PIXEL POSITION CLASS
+ * Illustrates information about the x and y
+ * location on an image.
+ */
 public class PixelPosition {
     private int x;
     private int y;
