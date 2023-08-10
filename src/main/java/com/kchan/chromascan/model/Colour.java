@@ -13,8 +13,6 @@ import com.theokanning.openai.service.OpenAiService;
  */
 public class Colour {
 
-    private static final String OPENAI_API_KEY = "";
-
     private Rgb rgb;
     private String hex;
     private String name;
@@ -58,7 +56,7 @@ public class Colour {
     }
 
     private void setName(){
-        OpenAiService service = new OpenAiService(OPENAI_API_KEY);
+        OpenAiService service = new OpenAiService(Constant.OPENAI_API_KEY);
         ChatCompletionRequest request = ChatCompletionRequest.builder()
             .model("gpt-3.5-turbo")
             .messages(
