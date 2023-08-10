@@ -47,6 +47,8 @@ public class ColourEvaluator {
         try {
             return ImageIO.read(getClass().getResource(file)); 
         } catch (IOException e) {
+            System.out.println(file);
+            System.out.println(getClass());
             System.out.println(e);
             throw new IllegalArgumentException(e.getMessage());
         }
