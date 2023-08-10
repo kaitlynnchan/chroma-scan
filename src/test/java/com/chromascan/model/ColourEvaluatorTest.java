@@ -1,4 +1,4 @@
-package com.kchan.chromascan.model;
+package com.chromascan.model;
 
 // import static org.junit.Assert.assertEquals;
 // import static org.junit.Assert.assertThrows;
@@ -6,6 +6,9 @@ package com.kchan.chromascan.model;
 import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
+
+import com.chromascan.model.ColourBreakdown;
+import com.chromascan.model.ColourEvaluator;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;

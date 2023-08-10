@@ -1,4 +1,4 @@
-package com.kchan.chromascan.model;
+package com.chromascan.model;
 
 public final class Constant {
     

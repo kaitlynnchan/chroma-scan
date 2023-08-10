@@ -1,4 +1,4 @@
-package com.kchan.chromascan.model;
+package com.chromascan.model;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
