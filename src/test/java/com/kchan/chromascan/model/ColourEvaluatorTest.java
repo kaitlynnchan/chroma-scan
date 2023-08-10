@@ -20,12 +20,14 @@ public class ColourEvaluatorTest {
     @Test
     public void successOnCreate() {
         ce = new ColourEvaluator("test-img2.png", 0, 0);
-        ColourBreakdown cb = ce.getColourBreakdown().get(ce.getColourBreakdown().size() - 1);
+        ce.findColours();
+        ColourBreakdown cb = ce.getDominantColour();
         assertAll(
             () -> assertEquals("#C2ED6D", cb.getHex()),
             () -> assertEquals(194, cb.getRgb().getRed()),
             () -> assertEquals(237, cb.getRgb().getGreen()),
             () -> assertEquals(109, cb.getRgb().getBlue()),
+            () -> assertEquals(100, cb.getPercentage()),
             () -> assertNotNull(cb.getName())            
         );
     }

@@ -1,8 +1,10 @@
 package com.kchan.chromascan.model;
 
 /**
- * Models information about a Colour object
- * Parameters: Rgb object, hex, name
+ * COLOUR CLASS
+ * Illustrate information about a Colour object.
+ * Creates the hex and comes up with a name from 
+ * the rgb value.
  */
 public class Colour {
 
@@ -36,18 +38,26 @@ public class Colour {
         return this.hex;
     }
 
+    public String getName(){
+        return this.name;
+    }
+
+    /**
+     * Parse the values of rgb to get the hex
+     */
     private void setHex(){
         this.hex = String.format(
             "#%02X%02X%02X",
             this.rgb.getRed(),
             this.rgb.getGreen(),
-            this.rgb.getBlue());
+            this.rgb.getBlue()
+        );
     }
 
-    public String getName(){
-        return this.name;
-    }
-
+    /**
+     * Creates openai wrapper object to come up 
+     * with a name for the colour
+     */
     private void setName(){
         OpenAiWrapper wrapper = new OpenAiWrapper(1.0, 20);
         wrapper.addMessage("system", "You are a creative assistant.");

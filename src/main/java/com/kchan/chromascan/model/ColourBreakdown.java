@@ -1,21 +1,17 @@
 package com.kchan.chromascan.model;
 
 /**
- * Models information of the breakdown of a Colour.
- * Extends the Colour object
- * Parameters: percentage
+ * COLOUR BREAKDOWN CLASS
+ * Extends from Colour Class to include the
+ * percentage of how much the colour covers
+ * the image.
  */
 public class ColourBreakdown extends Colour {
 
-    private double percentage;
+    private double percentage; // [0-100]
 
     public ColourBreakdown(Rgb rgb, double percentage){
         super(rgb);
-        this.percentage = percentage;
-    }
-
-    public ColourBreakdown(Rgb rgb, String hex, String name, double percentage){
-        super(rgb, hex, name);
         this.percentage = percentage;
     }
 
