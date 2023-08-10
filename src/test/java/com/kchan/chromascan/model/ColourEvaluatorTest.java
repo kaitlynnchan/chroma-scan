@@ -17,7 +17,7 @@ public class ColourEvaluatorTest {
     @Test
     public void successOnCreate() {
         System.out.println("here");
-        ce = new ColourEvaluator("/com/kchan/chromascan/resources/test-img2.png", 0, 0);
+        ce = new ColourEvaluator("test-img2.png", 0, 0);
         ColourBreakdown cb = ce.getColourBreakdown().get(ce.getColourBreakdown().size() - 1);
         assertEquals("#C2ED6D", cb.getHex());
     }
