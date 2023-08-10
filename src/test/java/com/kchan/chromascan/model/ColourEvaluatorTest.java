@@ -23,7 +23,9 @@ public class ColourEvaluatorTest {
         ColourBreakdown cb = ce.getColourBreakdown().get(ce.getColourBreakdown().size() - 1);
         assertAll(
             () -> assertEquals("#C2ED6D", cb.getHex()),
-            () -> assertEquals("(194, 237, 109)", cb.getRgb()),
+            () -> assertEquals(194, cb.getRgb().getRed()),
+            () -> assertEquals(237, cb.getRgb().getGreen()),
+            () -> assertEquals(109, cb.getRgb().getBlue()),
             () -> assertNotNull(cb.getName())            
         );
     }
