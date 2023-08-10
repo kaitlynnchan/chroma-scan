@@ -46,7 +46,7 @@ public class ColourEvaluator {
     private BufferedImage createImage(String file){
         try {
             return ImageIO.read(getClass().getResource(file)); 
-        } catch (IOException e) {
+        } catch (IOException | IllegalArgumentException e) {
             System.out.println(file);
             System.out.println(getClass());
             System.out.println(e);
