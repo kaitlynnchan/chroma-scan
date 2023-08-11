@@ -1,6 +1,7 @@
 package com.chromascan.model;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionResult;
@@ -36,23 +37,18 @@ public class OpenAiWrapper {
         return maxTokens;
     }
 
-    /**
-     * Add a chat message to arraylist
-     * 
-     * @param role      The role to assume. Either system, assistant, user.
-     * @param content   The message or prompt.
-     */
     public void addMessage(String role, String content){
         messages.add(new ChatMessage(role, content));
     }
 
-    /**
-     * Completes the chat completion request
-     * 
-     * @return  resulting message
-     */
     public String getChatCompletionRequestContent(){
-        OpenAiService service = new OpenAiService(Constant.getKey(Constant.OPENAI_API_KEY));
+        try {
+            TimeUnit.SECONDS.sleep(30);
+        } catch (InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+
+        OpenAiService service = new OpenAiService("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");
         ChatCompletionRequest request = ChatCompletionRequest.builder()
             .model("gpt-3.5-turbo")
             .messages(this.messages)

@@ -6,8 +6,9 @@ package com.chromascan.model;
  * location on an image.
  */
 public class PixelPosition {
-    private int x;
-    private int y;
+
+    private int x;  // horizontal position
+    private int y;  // vertical position
 
     public PixelPosition(int x, int y){
         this.x = x;
