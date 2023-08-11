@@ -1,19 +1,12 @@
 package com.chromascan.model;
 
-// import static org.junit.Assert.assertEquals;
-// import static org.junit.Assert.assertThrows;
-
-import java.io.IOException;
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
-
-import com.chromascan.model.ColourBreakdown;
-import com.chromascan.model.ImageEvaluator;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-// import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ColourEvaluatorTest {
@@ -41,5 +34,29 @@ public class ColourEvaluatorTest {
     public void failureOnCreate(){
         String nullFile = "resources/test-img3.png";
         assertThrows(IllegalArgumentException.class, () -> new ImageEvaluator(nullFile, 0, 0));
+    }
+
+    
+    @Test
+    public void successOnLargeSource() {
+        ImageEvaluator ce = new ImageEvaluator("test-img3.png",
+            new ArrayList<PixelPosition>(){{
+                add(new PixelPosition(10, 500));
+                add(new PixelPosition(358, 285));
+                add(new PixelPosition(600, 10));
+            }}
+        );
+        ce.getImage().evaluateImage();
+        ce.createBreakdown();
+
+        ColourBreakdown cb = ce.getDominantColour();
+        assertAll(
+            () -> assertEquals("#FFCC8D", cb.getHex()),
+            () -> assertEquals(255, cb.getRgb().getRed()),
+            () -> assertEquals(204, cb.getRgb().getGreen()),
+            () -> assertEquals(141, cb.getRgb().getBlue()),
+            // () -> assertEquals(100, cb.getPercentage()),
+            () -> assertNotNull(cb.getName())            
+        );
     }
 }
