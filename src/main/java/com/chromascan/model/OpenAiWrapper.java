@@ -48,7 +48,7 @@ public class OpenAiWrapper {
             System.out.println(e.getMessage());
         }
 
-        OpenAiService service = new OpenAiService("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");
+        OpenAiService service = new OpenAiService(Constant.getKey(Constant.OPENAI_API_KEY));
         ChatCompletionRequest request = ChatCompletionRequest.builder()
             .model("gpt-3.5-turbo")
             .messages(this.messages)
