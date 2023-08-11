@@ -1,20 +1,22 @@
-package com.chromascan.model;
+package com.chromascan.controller;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import com.chromascan.model.*;
 
 /**
  * COLOUR EVALUATOR CLASS
  * Given a image and pixel positions, this class 
  * will find the colours in the image.
  */
-public class ImageEvaluator {
+public class ImageController {
 
     private Image imgObj;
     private ArrayList<PixelPosition> pp;
     private ArrayList<ColourBreakdown> cb; // most dominant to least dominant
 
-    public ImageEvaluator(String file, int x, int y){
+    public ImageController(String file, int x, int y){
         this.imgObj = new Image(file);
         this.pp = new ArrayList<PixelPosition>(){{
             add(new PixelPosition(x, y));
@@ -22,7 +24,7 @@ public class ImageEvaluator {
         this.cb = new ArrayList<ColourBreakdown>();
     }
 
-    public ImageEvaluator(String file, ArrayList<PixelPosition> pp){
+    public ImageController(String file, ArrayList<PixelPosition> pp){
         this.imgObj = new Image(file);
         this.pp = pp;
         this.cb = new ArrayList<ColourBreakdown>();

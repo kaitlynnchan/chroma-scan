@@ -1,25 +1,28 @@
-package com.chromascan.model;
+package com.chromascan.controller;
 
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
+
+import com.chromascan.model.ColourBreakdown;
+import com.chromascan.model.PixelPosition;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ColourEvaluatorTest {
+public class ImageControllerTest {
 
-    ImageEvaluator ce;
+    ImageController ic;
     
     @Test
     public void successOnCreate() {
-        ImageEvaluator ce = new ImageEvaluator("test-img2.png", 0, 0);
-        ce.getImage().evaluateImage();
-        ce.createBreakdown();
+        ic = new ImageController("test-img2.png", 0, 0);
+        ic.getImage().evaluateImage();
+        ic.createBreakdown();
 
-        ColourBreakdown cb = ce.getDominantColour();
+        ColourBreakdown cb = ic.getDominantColour();
         assertAll(
             () -> assertEquals("#C2ED6D", cb.getHex()),
             () -> assertEquals(194, cb.getRgb().getRed()),
@@ -33,23 +36,23 @@ public class ColourEvaluatorTest {
     @Test
     public void failureOnCreate(){
         String nullFile = "resources/test-img3.png";
-        assertThrows(IllegalArgumentException.class, () -> new ImageEvaluator(nullFile, 0, 0));
+        assertThrows(IllegalArgumentException.class, () -> new ImageController(nullFile, 0, 0));
     }
 
     
     @Test
     public void successOnLargeSource() {
-        ImageEvaluator ce = new ImageEvaluator("test-img3.png",
+        ic = new ImageController("test-img3.png",
             new ArrayList<PixelPosition>(){{
                 add(new PixelPosition(10, 500));
                 add(new PixelPosition(358, 285));
                 add(new PixelPosition(600, 10));
             }}
         );
-        ce.getImage().evaluateImage();
-        ce.createBreakdown();
+        ic.getImage().evaluateImage();
+        ic.createBreakdown();
 
-        ColourBreakdown cb = ce.getDominantColour();
+        ColourBreakdown cb = ic.getDominantColour();
         assertAll(
             () -> assertEquals("#FFCC8D", cb.getHex()),
             () -> assertEquals(255, cb.getRgb().getRed()),

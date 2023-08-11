@@ -41,12 +41,6 @@ public class Image {
         return val;
     }
 
-    /**
-     * Create the image object from the file given
-     * 
-     * @param file  name of file
-     * @return      image object
-     */
     private BufferedImage createImage(String file){
         try {
             return ImageIO.read(getClass().getResource(file)); 
@@ -65,14 +59,6 @@ public class Image {
         }
     }
 
-    /**
-     * Finds the rgb value from the position in
-     * the image
-     * 
-     * @param x horizontal value
-     * @param y vertical value
-     * @return  rgb object
-     */
     private Rgb getRgbFromPosition(int x, int y){
         int pixel = this.image.getRGB(x, y);
         Color color = new Color(pixel, true);
