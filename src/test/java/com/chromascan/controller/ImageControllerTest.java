@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
 import com.chromascan.model.ColourBreakdown;
-import com.chromascan.model.PixelPosition;
+import com.chromascan.model.DataPoint;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -19,12 +19,12 @@ public class ImageControllerTest {
     @Test
     public void successOnCreate() {
         ic = new ImageController("test-img2.png", 
-            new ArrayList<PixelPosition>(){{
-                add(new PixelPosition(0, 0));
+            new ArrayList<DataPoint>(){{
+                add(new DataPoint(0, 0));
             }}
         );
         ic.getImage().evaluateImage();
-        ic.createBreakdown();
+        ic.populateBreakdownArr();
 
         ColourBreakdown cb = ic.getDominantColour();
         assertAll(
@@ -47,14 +47,14 @@ public class ImageControllerTest {
     @Test
     public void successOnLargeSource() {
         ic = new ImageController("test-img3.png",
-            new ArrayList<PixelPosition>(){{
-                add(new PixelPosition(10, 500));
-                add(new PixelPosition(358, 285));
-                add(new PixelPosition(600, 10));
+            new ArrayList<DataPoint>(){{
+                add(new DataPoint(10, 500));
+                add(new DataPoint(358, 285));
+                add(new DataPoint(600, 10));
             }}
         );
         ic.getImage().evaluateImage();
-        ic.createBreakdown();
+        ic.populateBreakdownArr();
 
         ColourBreakdown cb = ic.getDominantColour();
         assertAll(

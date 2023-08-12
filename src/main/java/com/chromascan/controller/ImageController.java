@@ -15,18 +15,18 @@ public class ImageController {
     private static final int NUM_TOP_COLOURS = 3;
 
     private Image imgObj;
-    private ArrayList<PixelPosition> pp;
+    private ArrayList<DataPoint> dp;
     private ArrayList<ColourBreakdown> cb; // most dominant to least dominant
 
     public ImageController(String file){
         this.imgObj = new Image(file);
-        this.pp = null;
+        this.dp = null;
         this.cb = new ArrayList<ColourBreakdown>();
     }
 
-    public ImageController(String file, ArrayList<PixelPosition> pp){
+    public ImageController(String file, ArrayList<DataPoint> dp){
         this.imgObj = new Image(file);
-        this.pp = pp;
+        this.dp = dp;
         this.cb = new ArrayList<ColourBreakdown>();
     }
 
@@ -34,11 +34,11 @@ public class ImageController {
         return this.imgObj;
     }
 
-    public ArrayList<PixelPosition> getPixelPosition() {
-        return this.pp;
+    public ArrayList<DataPoint> getDataPoints() {
+        return this.dp;
     }
 
-    public ArrayList<ColourBreakdown> getColourBreakdown() {
+    public ArrayList<ColourBreakdown> getColourBreakdowns() {
         return this.cb;
     }
 
@@ -47,29 +47,27 @@ public class ImageController {
         return cb.get(0);
     }
 
-    public void createBreakdown(){
-        if(this.pp != null){
-            Iterator<PixelPosition> positions = this.pp.iterator();
+    public void populateBreakdownArr(){
+        if(this.dp != null){
+            Iterator<DataPoint> positions = this.dp.iterator();
             while(positions.hasNext()){
-                PixelPosition p = positions.next();
-                // findColour(p.getX(), p.getY());
-
+                DataPoint p = positions.next();
                 Rgb rgbObj = this.imgObj.getRgbObject(p.getX(), p.getY());
-                long count = this.imgObj.getNumMatching(rgbObj);
-                int size = this.imgObj.getSize();
-                addColourBreakdown(new ColourBreakdown(rgbObj, count * 100 / size));
+                addColourBreakdown(rgbObj);
             }
         } else{
             for(int i = 1; i <= NUM_TOP_COLOURS; i++){
                 Rgb rgbObj = this.imgObj.getTopNRgb(i);
-                long count = this.imgObj.getNumMatching(rgbObj);
-                int size = this.imgObj.getSize();
-                addColourBreakdown(new ColourBreakdown(rgbObj, count * 100 / size));
+                addColourBreakdown(rgbObj);
             }
         }
     }
 
-    private void addColourBreakdown(ColourBreakdown breakdown){
+    private void addColourBreakdown(Rgb rgbObj){
+        long count = this.imgObj.getNumMatching(rgbObj);
+        int size = this.imgObj.getSize();
+        ColourBreakdown breakdown = new ColourBreakdown(rgbObj, count * 100 / size);
+
         System.out.println("======");
         System.out.println("RGB: " + breakdown.getRgb());
         System.out.println("Hex: " + breakdown.getHex());
