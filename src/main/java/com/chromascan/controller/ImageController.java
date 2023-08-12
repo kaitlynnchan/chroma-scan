@@ -12,6 +12,8 @@ import com.chromascan.model.*;
  */
 public class ImageController {
 
+    private static final int NUM_TOP_COLOURS = 3;
+
     private Image imgObj;
     private ArrayList<PixelPosition> pp;
     private ArrayList<ColourBreakdown> cb; // most dominant to least dominant
@@ -46,15 +48,24 @@ public class ImageController {
     }
 
     public void createBreakdown(){
-        Iterator<PixelPosition> positions = pp.iterator();
-        while(positions.hasNext()){
-            PixelPosition p = positions.next();
-            // findColour(p.getX(), p.getY());
+        if(this.pp != null){
+            Iterator<PixelPosition> positions = this.pp.iterator();
+            while(positions.hasNext()){
+                PixelPosition p = positions.next();
+                // findColour(p.getX(), p.getY());
 
-            Rgb rgbObj = this.imgObj.getRgbObject(p.getX(), p.getY());
-            long count = this.imgObj.getNumMatching(rgbObj);
-            int size = this.imgObj.getSize();
-            addColourBreakdown(new ColourBreakdown(rgbObj, count * 100 / size));
+                Rgb rgbObj = this.imgObj.getRgbObject(p.getX(), p.getY());
+                long count = this.imgObj.getNumMatching(rgbObj);
+                int size = this.imgObj.getSize();
+                addColourBreakdown(new ColourBreakdown(rgbObj, count * 100 / size));
+            }
+        } else{
+            for(int i = 1; i <= NUM_TOP_COLOURS; i++){
+                Rgb rgbObj = this.imgObj.getTopNRgb(i);
+                long count = this.imgObj.getNumMatching(rgbObj);
+                int size = this.imgObj.getSize();
+                addColourBreakdown(new ColourBreakdown(rgbObj, count * 100 / size));
+            }
         }
     }
 
