@@ -18,7 +18,11 @@ public class ImageControllerTest {
     
     @Test
     public void successOnCreate() {
-        ic = new ImageController("test-img2.png", 0, 0);
+        ic = new ImageController("test-img2.png", 
+            new ArrayList<PixelPosition>(){{
+                add(new PixelPosition(0, 0));
+            }}
+        );
         ic.getImage().evaluateImage();
         ic.createBreakdown();
 
@@ -36,7 +40,7 @@ public class ImageControllerTest {
     @Test
     public void failureOnCreate(){
         String nullFile = "resources/test-img3.png";
-        assertThrows(IllegalArgumentException.class, () -> new ImageController(nullFile, 0, 0));
+        assertThrows(IllegalArgumentException.class, () -> new ImageController(nullFile));
     }
 
     

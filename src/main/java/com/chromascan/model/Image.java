@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
@@ -39,6 +42,19 @@ public class Image {
                 && r.getBlue() == comp.getBlue())
             .count();
         return val;
+    }
+
+    public Rgb getTopNRgb(int n){
+        List<Rgb[]> list = Arrays.asList(arr);
+        List<Rgb> top = list.stream()
+            .flatMap(Arrays::stream)
+            .collect(Collectors.groupingBy(r -> r, Collectors.counting()))
+            .entrySet().stream()
+            .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+            .map(Map.Entry::getKey)
+            .limit(n)
+            .collect(Collectors.toList());
+        return top.get(n);
     }
 
     private BufferedImage createImage(String file){

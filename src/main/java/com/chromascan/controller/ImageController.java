@@ -16,11 +16,9 @@ public class ImageController {
     private ArrayList<PixelPosition> pp;
     private ArrayList<ColourBreakdown> cb; // most dominant to least dominant
 
-    public ImageController(String file, int x, int y){
+    public ImageController(String file){
         this.imgObj = new Image(file);
-        this.pp = new ArrayList<PixelPosition>(){{
-            add(new PixelPosition(x, y));
-        }};
+        this.pp = null;
         this.cb = new ArrayList<ColourBreakdown>();
     }
 
@@ -78,6 +76,14 @@ public class ImageController {
             return;
         }
         this.cb.add(breakdown);
+    }
+
+    public static void main(String[] args) {
+        ImageController ic = new ImageController("test-img3.png");
+        ic.getImage().evaluateImage();
+        Rgb top1 = ic.getImage().getTopNRgb(1);
+        Rgb top2 = ic.getImage().getTopNRgb(2);
+        Rgb top3 = ic.getImage().getTopNRgb(3);
     }
 
 }
