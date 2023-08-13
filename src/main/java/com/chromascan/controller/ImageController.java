@@ -26,8 +26,22 @@ public class ImageController {
 
     public ImageController(String file, ArrayList<DataPoint> dp){
         this.imgObj = new Image(file);
-        this.dp = dp;
+        this.dp = validateDataPoints(dp);
         this.cb = new ArrayList<ColourBreakdown>();
+    }
+
+    private ArrayList<DataPoint> validateDataPoints(ArrayList<DataPoint> dp){
+        try {
+            for(DataPoint p : dp){
+                if(p.getX() >= this.imgObj.getWidth() || p.getX() < 0 
+                    || p.getY() >= this.imgObj.getHeight() || p.getY() < 0){
+                    throw new IndexOutOfBoundsException("Data Point " + p + " is not a valid point");
+                }
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return dp;
     }
 
     public Image getImage() {
@@ -43,7 +57,6 @@ public class ImageController {
     }
 
     public ColourBreakdown getDominantColour(){
-        // primary, dominant?
         return cb.get(0);
     }
 
@@ -92,13 +105,9 @@ public class ImageController {
         long count = this.imgObj.getNumMatching(rgbObj);
         int size = this.imgObj.getSize();
         ColourBreakdown breakdown = new ColourBreakdown(rgbObj, count * 100 / size);
+        System.out.println(breakdown);
 
-        System.out.println("======");
-        System.out.println("RGB: " + breakdown.getRgb());
-        System.out.println("Hex: " + breakdown.getHex());
-        System.out.println("Name: " + breakdown.getName());
-        System.out.println("Percentage: " + breakdown.getPercentage());
-
+        // add new colour into the right position (highest percentage to lowest)
         for(int i = 0; i < this.cb.size(); i++){
             if(this.cb.get(i).getPercentage() == breakdown.getPercentage()){
                 this.cb.add(i, breakdown);

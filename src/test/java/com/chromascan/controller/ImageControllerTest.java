@@ -10,6 +10,7 @@ import com.chromascan.model.DataPoint;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -19,12 +20,12 @@ public class ImageControllerTest {
     
     @Test
     public void successOnCreate() {
+        System.out.println("====== successOnCreate ======");
         ic = new ImageController("test-img2.png", 
             new ArrayList<DataPoint>(){{
                 add(new DataPoint(0, 0));
             }}
         );
-        ic.getImage().evaluateImage();
         ic.populateBreakdownArr();
 
         ColourBreakdown cb = ic.getDominantColour();
@@ -36,17 +37,31 @@ public class ImageControllerTest {
             () -> assertEquals(100, cb.getPercentage()),
             () -> assertNotNull(cb.getName())            
         );
+        System.out.println("====== End ======");
     }
 
     @Test
     public void failureOnCreate(){
-        String nullFile = "resources/test-img3.png";
+        System.out.println("====== failureOnCreate ======");
+        String nullFile = "resources/test-img3.jpg";
         assertThrows(IllegalArgumentException.class, () -> new ImageController(nullFile));
+        System.out.println("====== End ======");
     }
 
-    
+    @Test
+    public void successOnIncorrectDataPoint(){
+        System.out.println("====== failureOnIncorrectDataPoint ======");
+        assertDoesNotThrow(() -> new ImageController("test-img1.png", 
+            new ArrayList<DataPoint>(){{
+                add(new DataPoint(50, 50));
+            }}
+        ));
+        System.out.println("====== End ======");
+    }
+
     @Test
     public void successOnLargeSource() {
+        System.out.println("====== successOnLargeSource ======");
         ic = new ImageController("test-img3.png",
             new ArrayList<DataPoint>(){{
                 add(new DataPoint(10, 500));
@@ -54,7 +69,6 @@ public class ImageControllerTest {
                 add(new DataPoint(600, 10));
             }}
         );
-        ic.getImage().evaluateImage();
         ic.populateBreakdownArr();
 
         ColourBreakdown cb = ic.getDominantColour();
@@ -66,12 +80,13 @@ public class ImageControllerTest {
             () -> assertEquals(60.0, cb.getPercentage()),
             () -> assertNotNull(cb.getName())            
         );
+        System.out.println("====== End ======");
     }
 
     @Test
     public void successOnColourMix(){
+        System.out.println("====== successOnColourMix ======");
         ic = new ImageController("test-img3.png");
-        ic.getImage().evaluateImage();
         ic.populateBreakdownArr();
 
         Colour mix = ic.getColourMix();
@@ -82,5 +97,6 @@ public class ImageControllerTest {
             () -> assertEquals(121, mix.getRgb().getBlue()),
             () -> assertNotNull(mix.getName())
         );
+        System.out.println("====== End ======");
     }
 }

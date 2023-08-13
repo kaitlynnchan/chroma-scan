@@ -18,4 +18,13 @@ public class ColourBreakdown extends Colour {
     public double getPercentage() {
         return this.percentage;
     }
+
+    @Override
+    public String toString() {
+        return "ColourBreakdown [rgb=" + getRgb() 
+            + ", hex=" + getHex()
+            + ", name=" + getName()
+            + ", percentage=" + percentage + "%"
+            + "]";
+    }
 }

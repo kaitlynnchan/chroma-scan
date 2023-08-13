@@ -10,7 +10,20 @@ public class Rgb {
 	private int green;
 	private int blue;
 
+    public Rgb(String rgbString){
+        String stripped = rgbString.replaceAll("[()]", "");
+        String[] parse = stripped.split("[, ]+");
+        
+        this.red = Integer.parseInt(parse[0]);
+        this.green = Integer.parseInt(parse[1]);
+        this.blue = Integer.parseInt(parse[2]);
+    }
+
     public Rgb(int red, int green, int blue){
+        if( red < 0 || green < 0 || blue < 0 
+            || red > 255 || green > 255 || blue > 255 ){
+                throw new IllegalArgumentException("(" + red + ", " + green + ", " + blue + ") are invalid paramaters.");
+            }
         this.red = red;
         this.green = green;
         this.blue = blue;

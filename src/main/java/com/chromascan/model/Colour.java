@@ -65,4 +65,9 @@ public class Colour {
         this.name = wrapper.getChatCompletionRequestContent();
     }
 
+    @Override
+    public String toString() {
+        return "Colour [rgb=" + rgb + ", hex=" + hex + ", name=" + name + "]";
+    }
+    
 }
