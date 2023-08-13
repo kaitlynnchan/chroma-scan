@@ -41,6 +41,11 @@ public class OpenAiWrapper {
         messages.add(new ChatMessage(role, content));
     }
 
+    /**
+     * Creates a chatcompletion request to openai and parse
+     * the response.
+     * @return  Message from openai chat completion request
+     */
     public String getChatCompletionRequestContent(){
         try {
             TimeUnit.SECONDS.sleep(30);

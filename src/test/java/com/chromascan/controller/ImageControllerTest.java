@@ -50,7 +50,7 @@ public class ImageControllerTest {
 
     @Test
     public void successOnIncorrectDataPoint(){
-        System.out.println("====== failureOnIncorrectDataPoint ======");
+        System.out.println("====== successOnIncorrectDataPoint ======");
         assertDoesNotThrow(() -> new ImageController("test-img1.png", 
             new ArrayList<DataPoint>(){{
                 add(new DataPoint(50, 50));
