@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
+import com.chromascan.model.Colour;
 import com.chromascan.model.ColourBreakdown;
 import com.chromascan.model.DataPoint;
 
@@ -62,8 +63,24 @@ public class ImageControllerTest {
             () -> assertEquals(255, cb.getRgb().getRed()),
             () -> assertEquals(204, cb.getRgb().getGreen()),
             () -> assertEquals(141, cb.getRgb().getBlue()),
-            // () -> assertEquals(100, cb.getPercentage()),
+            () -> assertEquals(60.0, cb.getPercentage()),
             () -> assertNotNull(cb.getName())            
+        );
+    }
+
+    @Test
+    public void successOnColourMix(){
+        ic = new ImageController("test-img3.png");
+        ic.getImage().evaluateImage();
+        ic.populateBreakdownArr();
+
+        Colour mix = ic.getColourMix();
+        assertAll(
+            () -> assertEquals("#FFC179", mix.getHex()),
+            () -> assertEquals(255, mix.getRgb().getRed()),
+            () -> assertEquals(193, mix.getRgb().getGreen()),
+            () -> assertEquals(121, mix.getRgb().getBlue()),
+            () -> assertNotNull(mix.getName())
         );
     }
 }

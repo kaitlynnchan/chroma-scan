@@ -47,6 +47,31 @@ public class ImageController {
         return cb.get(0);
     }
 
+    // public Colour getComplimentingColour(){
+
+    // }
+
+    public Colour getColourMix(){
+        // sum percentages
+        Double total = cb.stream()
+            .mapToDouble(c -> c.getPercentage())
+            .sum();
+        
+        Rgb mix = new Rgb(0, 0, 0);
+        // iterate through each colour
+        for(ColourBreakdown b : cb){
+            Double ratio = b.getPercentage() / total;
+            int red = (int) Math.round(b.getRgb().getRed() * ratio);
+            int green = (int) Math.round(b.getRgb().getGreen() * ratio);
+            int blue = (int) Math.round(b.getRgb().getBlue() * ratio);
+            // add value to Rgb
+            mix.setRed(mix.getRed() + red);
+            mix.setGreen(mix.getGreen() + green);
+            mix.setBlue(mix.getBlue() + blue);
+        }
+        return new Colour(mix);
+    }
+
     public void populateBreakdownArr(){
         if(this.dp != null){
             Iterator<DataPoint> positions = this.dp.iterator();
@@ -85,14 +110,6 @@ public class ImageController {
             return;
         }
         this.cb.add(breakdown);
-    }
-
-    public static void main(String[] args) {
-        ImageController ic = new ImageController("test-img3.png");
-        ic.getImage().evaluateImage();
-        Rgb top1 = ic.getImage().getTopNRgb(1);
-        Rgb top2 = ic.getImage().getTopNRgb(2);
-        Rgb top3 = ic.getImage().getTopNRgb(3);
     }
 
 }

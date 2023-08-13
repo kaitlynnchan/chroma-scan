@@ -20,12 +20,24 @@ public class Rgb {
         return this.red;
     }
 
+    public void setRed(int val){
+        this.red = val;
+    }
+
     public int getGreen(){
         return this.green;
+    }
+    
+    public void setGreen(int val){
+        this.green = val;
     }
 
     public int getBlue(){
         return this.blue;
+    }
+    
+    public void setBlue(int val){
+        this.blue = val;
     }
 
     @Override
