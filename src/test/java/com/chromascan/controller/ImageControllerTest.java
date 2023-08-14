@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
+import com.chromascan.model.Colour;
 import com.chromascan.model.ColourBreakdown;
-import com.chromascan.model.PixelPosition;
+import com.chromascan.model.DataPoint;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -18,9 +20,13 @@ public class ImageControllerTest {
     
     @Test
     public void successOnCreate() {
-        ic = new ImageController("test-img2.png", 0, 0);
-        ic.getImage().evaluateImage();
-        ic.createBreakdown();
+        System.out.println("====== successOnCreate ======");
+        ic = new ImageController("test-img2.png", 
+            new ArrayList<DataPoint>(){{
+                add(new DataPoint(0, 0));
+            }}
+        );
+        ic.populateBreakdownArr();
 
         ColourBreakdown cb = ic.getDominantColour();
         assertAll(
@@ -31,26 +37,39 @@ public class ImageControllerTest {
             () -> assertEquals(100, cb.getPercentage()),
             () -> assertNotNull(cb.getName())            
         );
+        System.out.println("====== End ======");
     }
 
     @Test
     public void failureOnCreate(){
-        String nullFile = "resources/test-img3.png";
-        assertThrows(IllegalArgumentException.class, () -> new ImageController(nullFile, 0, 0));
+        System.out.println("====== failureOnCreate ======");
+        String nullFile = "resources/test-img3.jpg";
+        assertThrows(IllegalArgumentException.class, () -> new ImageController(nullFile));
+        System.out.println("====== End ======");
     }
 
-    
+    @Test
+    public void successOnIncorrectDataPoint(){
+        System.out.println("====== successOnIncorrectDataPoint ======");
+        assertDoesNotThrow(() -> new ImageController("test-img1.png", 
+            new ArrayList<DataPoint>(){{
+                add(new DataPoint(50, 50));
+            }}
+        ));
+        System.out.println("====== End ======");
+    }
+
     @Test
     public void successOnLargeSource() {
+        System.out.println("====== successOnLargeSource ======");
         ic = new ImageController("test-img3.png",
-            new ArrayList<PixelPosition>(){{
-                add(new PixelPosition(10, 500));
-                add(new PixelPosition(358, 285));
-                add(new PixelPosition(600, 10));
+            new ArrayList<DataPoint>(){{
+                add(new DataPoint(10, 500));
+                add(new DataPoint(358, 285));
+                add(new DataPoint(600, 10));
             }}
         );
-        ic.getImage().evaluateImage();
-        ic.createBreakdown();
+        ic.populateBreakdownArr();
 
         ColourBreakdown cb = ic.getDominantColour();
         assertAll(
@@ -58,8 +77,26 @@ public class ImageControllerTest {
             () -> assertEquals(255, cb.getRgb().getRed()),
             () -> assertEquals(204, cb.getRgb().getGreen()),
             () -> assertEquals(141, cb.getRgb().getBlue()),
-            // () -> assertEquals(100, cb.getPercentage()),
+            () -> assertEquals(60.0, cb.getPercentage()),
             () -> assertNotNull(cb.getName())            
         );
+        System.out.println("====== End ======");
+    }
+
+    @Test
+    public void successOnColourMix(){
+        System.out.println("====== successOnColourMix ======");
+        ic = new ImageController("test-img3.png");
+        ic.populateBreakdownArr();
+
+        Colour mix = ic.getColourMix();
+        assertAll(
+            () -> assertEquals("#FFC179", mix.getHex()),
+            () -> assertEquals(255, mix.getRgb().getRed()),
+            () -> assertEquals(193, mix.getRgb().getGreen()),
+            () -> assertEquals(121, mix.getRgb().getBlue()),
+            () -> assertNotNull(mix.getName())
+        );
+        System.out.println("====== End ======");
     }
 }
