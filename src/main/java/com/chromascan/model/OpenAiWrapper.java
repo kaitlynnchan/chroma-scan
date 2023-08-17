@@ -47,8 +47,11 @@ public class OpenAiWrapper {
      * @return  Message from openai chat completion request
      */
     public String getChatCompletionRequestContent(){
+        // Free use of the openAI API allows for 3 requests per min
+        // In order to bypass this issue, the program will sleep 
+        //  for 20sec so each min will only have a max of 3 requests.
         try {
-            TimeUnit.SECONDS.sleep(30);
+            TimeUnit.SECONDS.sleep(20);
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
         }
