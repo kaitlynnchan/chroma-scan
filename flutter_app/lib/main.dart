@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Chroma Scan',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -28,10 +28,10 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Chroma Scan'),
     );
   }
 }
@@ -87,30 +87,39 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            const Flexible(
+              flex: 1,
+              child: LabelBox(label: "Name", text: "White wonderland",),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            const Flexible(
+              flex: 1,
+              child: Row(
+                children: [
+                  Expanded(child: LabelBox(label: "HEX", text: "#FFFFFF")),
+                  Expanded(child: LabelBox(label: "RGB", text: "(255, 255, 255)")),
+                ],
+              ),
+            ),
+            Flexible(
+              flex: 2,
+              child: Container(
+                margin: EdgeInsets.all(20),
+                child: SizedBox.expand(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(21, 243, 234, 1),
+                      border: Border.all(
+                        color: Colors.black
+                      ),
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
@@ -120,6 +129,43 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class LabelBox extends StatelessWidget {
+  const LabelBox({
+    super.key,
+    required this.label,
+    required this.text,
+    this.width = double.infinity,
+  });
+
+  final String label;
+  final String text;
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label),
+          Container(
+            padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.black,
+              ),
+              borderRadius: BorderRadius.circular(10)
+            ),
+            child: Text(text),
+          ),
+        ],
+      ),
     );
   }
 }
