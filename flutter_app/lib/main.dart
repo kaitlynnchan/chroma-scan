@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,24 +15,10 @@ class MyApp extends StatelessWidget {
       title: 'Chroma Scan',
       theme: ThemeData(
         // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Chroma Scan'),
+      home: const MyHomePage(title: 'ChromaScan'),
     );
   }
 }
@@ -78,36 +65,46 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
+      body: Container(
+        // Center is a layout widget. It takes a single child and positions it
+        // in the middle of the parent
+        padding: EdgeInsets.all(20),
         child: Column(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
           children: <Widget>[
-            const Flexible(
+            Flexible(
+              // name of the colour
               flex: 1,
-              child: LabelBox(label: "Name", text: "White wonderland",),
+              child: Container(
+                margin: EdgeInsets.only(bottom: 10),
+                child: LabelBox(label: "Name", text: "White wonderland",)),
             ),
-            const Flexible(
+            Flexible(
               flex: 1,
-              child: Row(
-                children: [
-                  Expanded(child: LabelBox(label: "HEX", text: "#FFFFFF")),
-                  Expanded(child: LabelBox(label: "RGB", text: "(255, 255, 255)")),
-                ],
+              child: Container(
+                margin: EdgeInsets.only(bottom: 10),
+                child: const Row(
+                  children: [
+                    // hex of the colour
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 10),
+                        child: LabelBox(label: "HEX", text: "#FFFFFF"),
+                      )
+                    ),
+                    // rgb of the colour
+                    Expanded(child: LabelBox(label: "RGB", text: "255, 255, 255")),
+                  ],
+                ),
               ),
             ),
             Flexible(
-              flex: 2,
+              flex: 1,
               child: Container(
-                margin: EdgeInsets.all(20),
                 child: SizedBox.expand(
                   child: DecoratedBox(
                     decoration: BoxDecoration(
@@ -124,11 +121,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
@@ -145,24 +137,37 @@ class LabelBox extends StatelessWidget {
   final String text;
   final double width;
 
+  void _onPressed(){
+    print(text);
+    Clipboard.setData(ClipboardData(text: text));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label),
           Container(
-            padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-            width: double.infinity,
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             decoration: BoxDecoration(
               border: Border.all(
                 color: Colors.black,
               ),
               borderRadius: BorderRadius.circular(10)
             ),
-            child: Text(text),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(text),
+                IconButton(
+                  onPressed: _onPressed,
+                  icon: Icon(Icons.content_copy),
+                  iconSize: 15,
+                ),
+              ]
+            ),
           ),
         ],
       ),
