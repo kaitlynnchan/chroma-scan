@@ -90,16 +90,16 @@ class IconTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-              child: Column(
-                children: [
-                  IconButton(
-                    onPressed: onPressed,
-                    icon: Icon(icon),
-                    iconSize: 30,
-                  ),
-                  Text(buttonLabel, style: TextStyle(fontSize: 12),)
-                ],
-              ),
-            );
+      child: Column(
+        children: [
+          IconButton(
+            onPressed: onPressed,
+            icon: Icon(icon),
+            iconSize: 30,
+          ),
+          Text(buttonLabel, style: TextStyle(fontSize: 12),)
+        ],
+      ),
+    );
   }
 }
