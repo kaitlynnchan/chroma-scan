@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'Chroma Scan',
       theme: ThemeData(
         // This is the theme of your application.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.redAccent),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'ChromaScan'),
@@ -108,6 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: SizedBox.expand(
                   child: DecoratedBox(
                     decoration: BoxDecoration(
+                      // visible colour
                       color: Color.fromRGBO(21, 243, 234, 1),
                       border: Border.all(
                         color: Colors.black
@@ -130,12 +131,10 @@ class LabelBox extends StatelessWidget {
     super.key,
     required this.label,
     required this.text,
-    this.width = double.infinity,
   });
 
   final String label;
   final String text;
-  final double width;
 
   void _onPressed(){
     print(text);
