@@ -1,5 +1,6 @@
 package com.chromascan.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -17,6 +18,12 @@ public class ImageController {
     private Image imgObj;
     private ArrayList<DataPoint> dp;
     private ArrayList<ColourBreakdown> cb; // most dominant to least dominant
+
+    public ImageController(File file){
+        this.imgObj = new Image(file);
+        this.dp = null;
+        this.cb = new ArrayList<ColourBreakdown>();
+    }
 
     public ImageController(String file){
         this.imgObj = new Image(file);

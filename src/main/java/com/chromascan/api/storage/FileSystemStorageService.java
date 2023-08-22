@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -83,6 +84,25 @@ public class FileSystemStorageService implements StorageService {
 			}
 		}
 		catch (MalformedURLException e) {
+			throw new StorageFileNotFoundException("Could not read file: " + filename, e);
+		}
+	}
+
+	@Override
+	public File loadAsFile(String filename) {
+		try {
+			Path file = load(filename);
+			File resource = new File(file.toUri());
+			if (resource.exists() || resource.canRead()) {
+				return resource;
+			}
+			else {
+				throw new StorageFileNotFoundException(
+						"Could not read file: " + filename);
+
+			}
+		}
+		catch (NullPointerException e) {
 			throw new StorageFileNotFoundException("Could not read file: " + filename, e);
 		}
 	}

@@ -43,7 +43,7 @@ public class ImageControllerTest {
     @Test
     public void failureOnCreate(){
         System.out.println("====== failureOnCreate ======");
-        String nullFile = "resources/test-img3.jpg";
+        String nullFile = "resources/test-img2.jpg";
         assertThrows(IllegalArgumentException.class, () -> new ImageController(nullFile));
         System.out.println("====== End ======");
     }
