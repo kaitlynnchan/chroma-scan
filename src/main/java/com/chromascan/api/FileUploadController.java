@@ -42,39 +42,47 @@ public class FileUploadController {
 		this.storageService = storageService;
 	}
 
-	@GetMapping("/")
-	public String listUploadedFiles(Model model) throws IOException {
+	// @GetMapping("/")
+	// public String listUploadedFiles(Model model) throws IOException {
 
-		model.addAttribute("files", storageService.loadAll().map(
-				path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
-						"serveFile", path.getFileName().toString()).build().toUri().toString())
-				.collect(Collectors.toList()));
+	// 	model.addAttribute("files", storageService.loadAll().map(
+	// 			path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
+	// 					"serveFile", path.getFileName().toString()).build().toUri().toString())
+	// 			.collect(Collectors.toList()));
 
-		return "uploadForm";
-	}
+	// 	return "uploadForm";
+	// }
 
 	@GetMapping("/api/file/{filename}")
-	public ColourBreakdown getDominantColour(@PathVariable String filename, HttpServletResponse response) {
+	public ResponseEntity<ColourBreakdown> getDominantColour(@PathVariable String filename, HttpServletResponse response) {
 
-		File file = storageService.loadAsFile(filename);
+		Resource file1 = storageService.loadAsResource(filename);
 		
-        ic = new ImageController(file);
-        ic.populateBreakdownArr();
+		// File file = storageService.loadAsFile(filename);
+		try {
+			ic = new ImageController(file1.getFile());
+			ic.populateBreakdownArr();
 
-        ColourBreakdown cb = ic.getDominantColour();
-		response.setStatus(HttpServletResponse.SC_OK);
-		return cb;
+			ColourBreakdown cb = ic.getDominantColour();
+			response.setStatus(HttpServletResponse.SC_OK);
+			return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+					"attachment; filename=\"" + file1.getFilename() + "\"").body(cb);
+		} catch (IOException e) {
+			// TODO: handle exception
+			System.out.println("Error: " + e.getMessage());
+			return null;
+		}
 	}
 
 	@PostMapping("/api/file/upload")
-	public String handleFileUpload(@RequestParam("file") MultipartFile file,
-			RedirectAttributes redirectAttributes) {
+	public void handleFileUpload(@RequestParam("file") MultipartFile file,
+			RedirectAttributes redirectAttributes, HttpServletResponse response) {
 
 		storageService.store(file);
 		redirectAttributes.addFlashAttribute("message",
 				"You successfully uploaded " + file.getOriginalFilename() + "!");
-
-		return "redirect:/";
+		
+		response.setStatus(HttpServletResponse.SC_FOUND);
 	}
 
 	@ExceptionHandler(StorageFileNotFoundException.class)

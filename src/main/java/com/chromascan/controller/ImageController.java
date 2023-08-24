@@ -114,6 +114,9 @@ public class ImageController {
             // get the top colours
             for(int i = 1; i <= NUM_TOP_COLOURS; i++){
                 Rgb rgbObj = this.imgObj.getTopNRgb(i);
+                if(rgbObj == null){
+                    break;
+                }
                 addColourBreakdown(rgbObj);
             }
         }

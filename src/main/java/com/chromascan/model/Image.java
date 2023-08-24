@@ -87,7 +87,7 @@ public class Image {
      */
     public Rgb getTopNRgb(int n){
         if(n > getTotalNumColours()){
-            return parseStringToRgb(imgColours.get(getTotalNumColours()-1).getKey());
+            return null;
         }
         return parseStringToRgb(imgColours.get(n-1).getKey());
     }
