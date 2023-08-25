@@ -36,18 +36,20 @@ public class FileUploadController {
 		this.storageService = storageService;
 	}
 
-	@GetMapping(value = {"/api/file/{filename}/getDominantColour", "/api/file/{filename}/{datapoints}/getDominantColour"})
+	@GetMapping(value = {"/api/file/{filename}/getDominantColour", 
+		"/api/file/{filename}/{datapoints}/getDominantColour"})
 	public ResponseEntity<ColourBreakdown> getDominantColour(@PathVariable(required = true) String filename,
 			@PathVariable(required = false) String[] datapoints, HttpServletResponse response) {
 		try {
 			Resource file = storageService.loadAsResource(filename);
+			// data points are provided
 			if(datapoints != null){
 				ic = new ImageController(file.getFile(), parseDataPoints(datapoints));
 			} else {
 				ic = new ImageController(file.getFile());
 			}
-			ic.populateBreakdownArr();
 
+			ic.populateBreakdownArr();
 			ColourBreakdown cb = ic.getDominantColour();
 			
 			response.setStatus(HttpServletResponse.SC_OK);
@@ -60,9 +62,12 @@ public class FileUploadController {
 	}
 
 	private ArrayList<DataPoint> parseDataPoints(String[] dp){
+		// validate that the data has at least 2 points
 		if(dp.length % 2 != 0){
 			return null;
 		}
+		// create data point array list
+		// first index is x, next is y, alternating
 		ArrayList<DataPoint> arr = new ArrayList<DataPoint>();
 		for(int i = 0; i < dp.length; i+=2){
 			DataPoint point = new DataPoint(Integer.parseInt(dp[i]), Integer.parseInt(dp[i+1]));
@@ -75,14 +80,16 @@ public class FileUploadController {
 	public ResponseEntity<Colour> getColourMix(@PathVariable(required = true) String filename, 
 			@PathVariable(required = false) String[] datapoints, HttpServletResponse response) {
 		try {
-			Resource file = storageService.loadAsResource(filename);			
+			Resource file = storageService.loadAsResource(filename);
+			
+			// data points are provided
 			if(datapoints != null){
 				ic = new ImageController(file.getFile(), parseDataPoints(datapoints));
 			} else {
 				ic = new ImageController(file.getFile());
 			}
-			ic.populateBreakdownArr();
 
+			ic.populateBreakdownArr();
 			Colour cb = ic.getColourMix();
 			
 			response.setStatus(HttpServletResponse.SC_OK);
@@ -97,7 +104,8 @@ public class FileUploadController {
 	@PostMapping("/api/file/upload")
 	public void handleFileUpload(@RequestParam("file") MultipartFile file,
 			RedirectAttributes redirectAttributes, HttpServletResponse response) {
-		storageService.store(file);		
+		// upload file to storage service
+		storageService.store(file);
 		response.setStatus(HttpServletResponse.SC_FOUND);
 	}
 

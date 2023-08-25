@@ -79,7 +79,7 @@ public class ImageControllerTest {
             () -> assertEquals(204, cb.getRgb().getGreen()),
             () -> assertEquals(141, cb.getRgb().getBlue()),
             () -> assertEquals(60.0, cb.getPercentage()),
-            () -> assertNotNull(cb.getName())            
+            () -> assertNotNull(cb.getName())
         );
         System.out.println("====== End ======");
     }

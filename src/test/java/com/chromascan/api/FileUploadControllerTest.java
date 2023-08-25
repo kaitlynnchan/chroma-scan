@@ -47,34 +47,44 @@ public class FileUploadControllerTest {
     
     @Test
 	public void successUploadFile() throws Exception {
+		// api endpoint
 		String url = "/api/file/upload";
-		ClassPathResource resource = new ClassPathResource("test-img4.png", getClass());
 
+		// multi value map for image
+		ClassPathResource resource = new ClassPathResource("test-img4.png", getClass());
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		map.add("file", resource);
 
+		// HTTP request headers
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(map, headers);
 
-		ResponseEntity<String> response = this.restTemplate.postForEntity(url, request, String.class);
+		// makes the request and the response is returned
+		ResponseEntity<String> response = this.restTemplate
+			.postForEntity(url, request, String.class);
 
+		// assertions
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FOUND);
 		then(storageService).should().store(any(MultipartFile.class));
 	}
 
     @Test
 	public void successGetDominantColour() throws Exception {
+		// assert that the resource exists in storage service
 		ClassPathResource resource = new ClassPathResource("test-img4.png", getClass());
 		given(this.storageService.loadAsResource("test-img4.png")).willReturn(resource);
 
+		// api endpoint
 		String url = "/api/file/{filename}/getDominantColour";
 		ResponseEntity<String> response = this.restTemplate
 			.getForEntity(url, String.class, "test-img4.png");
 
+		// map response body to json object
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(response.getBody());
 
+		// assertions
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(response.getHeaders().getFirst(HttpHeaders.CONTENT_DISPOSITION))
 			.isEqualTo("attachment; filename=\"test-img4.png\"");
@@ -88,17 +98,21 @@ public class FileUploadControllerTest {
 
 	@Test
 	public void successDataPointsDominantColour() throws Exception {
+		// assert that the resource exists in storage service
 		ClassPathResource resource = new ClassPathResource("test-img5.png", getClass());
 		given(this.storageService.loadAsResource("test-img5.png")).willReturn(resource);
 
+		// api endpoint
 		String url = "/api/file/{filename}/{datapoints}/getDominantColour";
 		String datapoints = "10, 500, 358, 285, 600, 10";
 		ResponseEntity<String> response = this.restTemplate
 			.getForEntity(url, String.class, "test-img5.png", datapoints);
 
+		// map response body to json object
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(response.getBody());
 
+		// assertions
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(response.getHeaders().getFirst(HttpHeaders.CONTENT_DISPOSITION))
 			.isEqualTo("attachment; filename=\"test-img5.png\"");
@@ -112,16 +126,20 @@ public class FileUploadControllerTest {
 	
     @Test
 	public void successGetColourMix() throws Exception {
+		// assert that the resource exists in storage service
 		ClassPathResource resource = new ClassPathResource("test-img4.png", getClass());
 		given(this.storageService.loadAsResource("test-img4.png")).willReturn(resource);
 
+		// api endpoint
 		String url = "/api/file/{filename}/getColourMix";
 		ResponseEntity<String> response = this.restTemplate
 			.getForEntity(url, String.class, "test-img4.png");
 
+		// map response body to json object
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(response.getBody());
 
+		// assertions
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(response.getHeaders().getFirst(HttpHeaders.CONTENT_DISPOSITION))
 			.isEqualTo("attachment; filename=\"test-img4.png\"");
