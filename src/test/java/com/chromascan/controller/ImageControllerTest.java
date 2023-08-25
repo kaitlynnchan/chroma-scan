@@ -1,5 +1,6 @@
 package com.chromascan.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
@@ -43,8 +44,8 @@ public class ImageControllerTest {
     @Test
     public void failureOnCreate(){
         System.out.println("====== failureOnCreate ======");
-        String nullFile = "resources/test-img2.jpg";
-        assertThrows(IllegalArgumentException.class, () -> new ImageController(nullFile));
+        String nullFile = "resources/test-img3.jpg";
+        assertThrows(IllegalArgumentException.class, () -> new ImageController(new File(nullFile)));
         System.out.println("====== End ======");
     }
 

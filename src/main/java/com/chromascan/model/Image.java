@@ -112,6 +112,15 @@ public class Image {
      * @param file  file thats located in resources/com/chromascan/model
      * @return      bufferedImage object
      */
+    private BufferedImage createImage(File file){
+        try {
+            return ImageIO.read(file);
+        } catch (IOException | IllegalArgumentException e) {
+            System.out.println(e);
+            throw new IllegalArgumentException(e.getMessage());
+        }
+    }
+
     private BufferedImage createImage(String file){
         try {
             return ImageIO.read(getClass().getResource(file));
@@ -121,14 +130,6 @@ public class Image {
         }
     }
 
-    private BufferedImage createImage(File file){
-        try {
-            return ImageIO.read(file);
-        } catch (IOException | IllegalArgumentException e) {
-            System.out.println(e);
-            throw new IllegalArgumentException(e.getMessage());
-        }
-    }
     /**
      * Map pixels from image to Rgb object
      */

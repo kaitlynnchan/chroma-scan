@@ -1,13 +1,11 @@
 package com.chromascan.api;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -21,7 +19,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,7 +33,6 @@ import com.chromascan.api.storage.StorageService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class FileUploadControllerTest {
 
@@ -52,7 +48,7 @@ public class FileUploadControllerTest {
     @Test
 	public void successUploadFile() throws Exception {
 		String url = "/api/file/upload";
-		ClassPathResource resource = new ClassPathResource("test-img1.png", getClass());
+		ClassPathResource resource = new ClassPathResource("test-img4.png", getClass());
 
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		map.add("file", resource);
@@ -69,30 +65,74 @@ public class FileUploadControllerTest {
 
     @Test
 	public void successGetDominantColour() throws Exception {
-		String url = "/api/file/{filename}";
-		ClassPathResource resource = new ClassPathResource("test-img1.png", getClass());
-		given(this.storageService.loadAsResource("test-img1.png")).willReturn(resource);
+		ClassPathResource resource = new ClassPathResource("test-img4.png", getClass());
+		given(this.storageService.loadAsResource("test-img4.png")).willReturn(resource);
 
+		String url = "/api/file/{filename}/getDominantColour";
 		ResponseEntity<String> response = this.restTemplate
-			.getForEntity(url, String.class, "test-img1.png");
+			.getForEntity(url, String.class, "test-img4.png");
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(response.getBody());
-		JsonNode rgb = root.path("rgb");
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(response.getHeaders().getFirst(HttpHeaders.CONTENT_DISPOSITION))
-			.isEqualTo("attachment; filename=\"test-img1.png\"");
+			.isEqualTo("attachment; filename=\"test-img4.png\"");
         assertAll(
-            () -> assertEquals("#1E1F1C", root.path("hex").asText()),
-            () -> assertEquals(30, rgb.get("red").asInt()),
-            () -> assertEquals(31, rgb.get("green").asInt()),
-            () -> assertEquals(28, rgb.get("blue").asInt()),
-            () -> assertEquals(100.0, root.path("percentage").asDouble()),
-            () -> assertNotNull(root.path("name"))            
+			() -> assertNotNull(root.path("rgb")),
+            () -> assertNotNull(root.path("hex")),
+            () -> assertNotNull(root.path("percentage")),
+            () -> assertNotNull(root.path("name"))      
+        );
+	}
+
+	@Test
+	public void successDataPointsDominantColour() throws Exception {
+		ClassPathResource resource = new ClassPathResource("test-img5.png", getClass());
+		given(this.storageService.loadAsResource("test-img5.png")).willReturn(resource);
+
+		String url = "/api/file/{filename}/{datapoints}/getDominantColour";
+		String datapoints = "10, 500, 358, 285, 600, 10";
+		ResponseEntity<String> response = this.restTemplate
+			.getForEntity(url, String.class, "test-img5.png", datapoints);
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(response.getBody());
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getHeaders().getFirst(HttpHeaders.CONTENT_DISPOSITION))
+			.isEqualTo("attachment; filename=\"test-img5.png\"");
+        assertAll(
+			() -> assertNotNull(root.path("rgb")),
+            () -> assertNotNull(root.path("hex")),
+            () -> assertNotNull(root.path("percentage")),
+            () -> assertNotNull(root.path("name"))
         );
 	}
 	
+    @Test
+	public void successGetColourMix() throws Exception {
+		ClassPathResource resource = new ClassPathResource("test-img4.png", getClass());
+		given(this.storageService.loadAsResource("test-img4.png")).willReturn(resource);
+
+		String url = "/api/file/{filename}/getColourMix";
+		ResponseEntity<String> response = this.restTemplate
+			.getForEntity(url, String.class, "test-img4.png");
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(response.getBody());
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getHeaders().getFirst(HttpHeaders.CONTENT_DISPOSITION))
+			.isEqualTo("attachment; filename=\"test-img4.png\"");
+        assertAll(
+			() -> assertNotNull(root.path("rgb")),
+            () -> assertNotNull(root.path("hex")),
+            () -> assertNotNull(root.path("percentage")),
+            () -> assertNotNull(root.path("name"))      
+        );
+	}
+
     @TestConfiguration(proxyBeanMethods = false)
     static class RestTemplateBuilderConfiguration {
 

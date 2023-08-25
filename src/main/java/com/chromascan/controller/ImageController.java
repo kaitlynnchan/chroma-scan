@@ -30,6 +30,12 @@ public class ImageController {
         this.dp = null;
         this.cb = new ArrayList<ColourBreakdown>();
     }
+    
+    public ImageController(File file, ArrayList<DataPoint> dp){
+        this.imgObj = new Image(file);
+        this.dp = validateDataPoints(dp);
+        this.cb = new ArrayList<ColourBreakdown>();
+    }
 
     public ImageController(String file, ArrayList<DataPoint> dp){
         this.imgObj = new Image(file);
