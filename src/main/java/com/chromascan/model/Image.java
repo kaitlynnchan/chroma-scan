@@ -2,6 +2,7 @@ package com.chromascan.model;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -18,6 +19,16 @@ public class Image {
     private List<Map.Entry<String,Long>> imgColours;
     private int width;
     private int height;
+
+    public Image(File file){
+        this.image = createImage(file);
+        this.width = this.image.getWidth();
+        this.height = this.image.getHeight();
+        this.arr = new Rgb[this.height][this.width];
+
+        evaluateImage();
+        sortArr();
+    }
 
     public Image(String file){
         this.image = createImage(file);
@@ -76,7 +87,7 @@ public class Image {
      */
     public Rgb getTopNRgb(int n){
         if(n > getTotalNumColours()){
-            return parseStringToRgb(imgColours.get(getTotalNumColours()-1).getKey());
+            return null;
         }
         return parseStringToRgb(imgColours.get(n-1).getKey());
     }
@@ -101,9 +112,18 @@ public class Image {
      * @param file  file thats located in resources/com/chromascan/model
      * @return      bufferedImage object
      */
+    private BufferedImage createImage(File file){
+        try {
+            return ImageIO.read(file);
+        } catch (IOException | IllegalArgumentException e) {
+            System.out.println(e);
+            throw new IllegalArgumentException(e.getMessage());
+        }
+    }
+
     private BufferedImage createImage(String file){
         try {
-            return ImageIO.read(getClass().getResource(file)); 
+            return ImageIO.read(getClass().getResource(file));
         } catch (IOException | IllegalArgumentException e) {
             System.out.println(e);
             throw new IllegalArgumentException(e.getMessage());
