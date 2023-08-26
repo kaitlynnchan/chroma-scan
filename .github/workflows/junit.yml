@@ -28,4 +28,5 @@ jobs:
       - name: Build project with Maven
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: mvn -B package --file pom.xml
+        run: mvn --verison
+        # run: mvn -B package --file pom.xml
