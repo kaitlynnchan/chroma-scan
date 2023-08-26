@@ -26,13 +26,13 @@ import com.chromascan.model.DataPoint;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
-public class FileUploadController {
+public class ChromaScanController {
 
 	private final StorageService storageService;
     private ImageController ic;
 
 	@Autowired
-	public FileUploadController(StorageService storageService) {
+	public ChromaScanController(StorageService storageService) {
 		this.storageService = storageService;
 	}
 

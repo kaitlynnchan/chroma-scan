@@ -3,6 +3,7 @@ package com.chromascan.controller;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import com.chromascan.model.Colour;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@Tag("Unit")
 public class ImageControllerTest {
 
     ImageController ic;

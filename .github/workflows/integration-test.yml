@@ -1,17 +1,17 @@
-name: Run junit tests
+name: Run integration tests
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'src/**/model/**'
+      - 'src/**/api/**'
       - 'src/**/controller/**'
   pull_request:
     branches:
       - main
     paths:
-      - 'src/**/model/**'
+      - 'src/**/api/**'
       - 'src/**/controller/**'
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
           java-version: '17'
           distribution: 'oracle'
 
-      - name: Build and run unit tests
+      - name: Build and run integration tests
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: mvn test
+        run: mvn verify -Pintegration-tests
