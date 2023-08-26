@@ -1,7 +1,9 @@
 package com.chromascan.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import com.chromascan.model.Colour;
@@ -14,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@Tag("Unit")
 public class ImageControllerTest {
 
     ImageController ic;
@@ -44,7 +47,7 @@ public class ImageControllerTest {
     public void failureOnCreate(){
         System.out.println("====== failureOnCreate ======");
         String nullFile = "resources/test-img3.jpg";
-        assertThrows(IllegalArgumentException.class, () -> new ImageController(nullFile));
+        assertThrows(IllegalArgumentException.class, () -> new ImageController(new File(nullFile)));
         System.out.println("====== End ======");
     }
 
@@ -78,7 +81,7 @@ public class ImageControllerTest {
             () -> assertEquals(204, cb.getRgb().getGreen()),
             () -> assertEquals(141, cb.getRgb().getBlue()),
             () -> assertEquals(60.0, cb.getPercentage()),
-            () -> assertNotNull(cb.getName())            
+            () -> assertNotNull(cb.getName())
         );
         System.out.println("====== End ======");
     }
