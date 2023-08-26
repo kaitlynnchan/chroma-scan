@@ -16,6 +16,9 @@ on:
 
 jobs:
   build_and_test:
+    concurrency:
+        group: build_and_test
+        cancel-in-progress: false
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
