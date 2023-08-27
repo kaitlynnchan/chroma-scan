@@ -1,9 +1,9 @@
-import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sidebarx/sidebarx.dart';
+
+import './pages/home.dart';
+import './pages/file.dart';
 
 const primaryColor = Color.fromRGBO(243, 191, 3, 1);
 const canvasColor = Color.fromRGBO(246, 193, 3, 1);
@@ -57,7 +57,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final _controller = SidebarXController(selectedIndex: 0, extended: true);
-
+  
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -81,11 +81,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   // final pageTitle = _getTitleByIndex(_controller.selectedIndex);
                   switch (_controller.selectedIndex) {
                     case 0:
-                      return _HomeScreen(title: "ChromaScan");
+                      return HomeScreen(title: "ChromaScan");
+                    case 1:
+                      return UploadScreen(title: "Select");
                     case 2:
                       return UploadScreen(title: "Upload Image");
                     default:
-                      return _HomeScreen(title: "ChromaScan");
+                      return HomeScreen(title: "ChromaScan");
                   }
                 }
               ),
@@ -183,78 +185,6 @@ class _SidebarX extends StatelessWidget {
   }
 }
 
-class _HomeScreen extends StatelessWidget {
-  const _HomeScreen({
-    Key? key,
-    required String this.title,
-  }) : super(key: key);
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 400,
-      margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
-      child: Column(
-        children: <Widget>[
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              title,
-              style: const TextStyle(
-                color: canvasColor,
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 10),
-            child: LabelBox(label: "Name", text: "White wonderland",)
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 10),
-            child: const Row(
-              children: [
-                // hex of the colour
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: LabelBox(label: "HEX", text: "#FFFFFF"),
-                  )
-                ),
-                // rgb of the colour
-                Expanded(child: LabelBox(label: "RGB", text: "255, 255, 255")),
-              ],
-            ),
-          ),
-          Flexible(
-            flex: 1,
-            child: Container(
-              margin: EdgeInsets.only(top: 20),
-              child: SizedBox.expand(
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    // visible colour
-                    color: Color.fromRGBO(21, 243, 234, 1),
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(10)
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 String _getTitleByIndex(int index) {
   switch (index) {
     case 0:
@@ -311,108 +241,6 @@ class LabelBox extends StatelessWidget {
                 ),
               ]
             ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class UploadScreen extends StatefulWidget {
-  const UploadScreen({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<UploadScreen> createState() => _UploadScreen();
-}
-
-class _UploadScreen extends State<UploadScreen> {
-  String url = "";
-
-  Future<void> _filePicker() async {
-    try{
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['jpg', 'png'],
-      );
-
-      if (result != null) {
-        String filePath = result.files.single.path!;
-        File file = File(filePath);
-        print(filePath);
-        _updateFile(filePath);
-      } else {
-        // User canceled the picker
-      }
-    } catch(_){
-
-    }
-  }
-
-  void _updateFile(String filePath) {
-    setState(() {
-        url = filePath;
-    });
-  }
-
-  void _uploadFile(){
-
-  }
-  
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 400,
-      margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
-      child: Column(
-        children: <Widget>[
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              widget.title,
-              style: const TextStyle(
-                color: canvasColor,
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.only(right: 10),
-                    child: OutlinedButton(
-                      onPressed: _filePicker,
-                      child: Text(url, style: TextStyle(color: navyBlue),),
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(width: 2.0, color: Colors.black,),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                FilledButton(onPressed: _uploadFile, child: const Text('Upload'),
-                  style: FilledButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    backgroundColor: canvasColor,
-                  ),
-                ),
-                
-              ],
-            ),
-          ),
-          Container(
-            height: 200,
-            child: !url.isEmpty ? Image(fit: BoxFit.contain, image: FileImage(File(url)),) : Container(),
           ),
         ],
       ),
