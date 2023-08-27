@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:screen_capturer/screen_capturer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const MyToolBarApp());
@@ -47,6 +52,34 @@ class _MyToolBarPage extends State<MyToolBarPage> {
   void _onPressed(){
   }
 
+  Future<void> _screenCapture() async{
+    CapturedData? capturedData = await screenCapturer.capture(
+      mode: CaptureMode.region, // screen, window
+      imagePath: '<path>',
+      copyToClipboard: true,
+    );
+  }
+
+  Future<void> _filePicker() async {
+    try{
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['jpg', 'png'],
+      );
+
+      if (result != null) {
+        String filePath = result.files.single.path!;
+        File file = File(filePath);
+        print(file);
+        setState(() {});
+      } else {
+        // User canceled the picker
+      }
+    } catch(_){
+
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -65,8 +98,8 @@ class _MyToolBarPage extends State<MyToolBarPage> {
           children: <Widget>[
             IconTextButton(onPressed: _onPressed, icon: Icons.search, buttonLabel: "Select",),
             IconTextButton(onPressed: _onPressed, icon: Icons.scatter_plot, buttonLabel: "Select Points",),
-            IconTextButton(onPressed: _onPressed, icon: Icons.photo_size_select_large, buttonLabel: "Select Image",),
-            IconTextButton(onPressed: _onPressed, icon: Icons.upload_file, buttonLabel: "Upload File",),
+            IconTextButton(onPressed: _screenCapture, icon: Icons.photo_size_select_large, buttonLabel: "Select Image",),
+            IconTextButton(onPressed: _filePicker, icon: Icons.upload_file, buttonLabel: "Upload File",),
           ],
         ),
       ),
@@ -88,7 +121,6 @@ class IconTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
       child: Column(
         children: [
