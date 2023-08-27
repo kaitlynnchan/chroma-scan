@@ -5,6 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sidebarx/sidebarx.dart';
 
+const primaryColor = Color.fromRGBO(243, 191, 3, 1);
+const canvasColor = Color.fromRGBO(246, 193, 3, 1);
+const scaffoldBackgroundColor = Color.fromRGBO(255, 219, 91, 1);
+const accentCanvasColor = Color.fromRGBO(210, 165, 0, 1);
+const white = Colors.white;
+const navyBlue = Color.fromRGBO(31, 38, 46, 1);
+const lightYellow = Color.fromRGBO(255, 246, 225, 1);
+final actionColor = const Color.fromRGBO(246, 193, 3, 1).withOpacity(0.6);
+final divider = Divider(color: navyBlue.withOpacity(0.3), height: 1);
+
 void main() {
   runApp(const MyApp());
 }
@@ -75,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     case 2:
                       return UploadScreen(title: "Upload Image");
                     default:
-                      return Text("data");
+                      return _HomeScreen(title: "ChromaScan");
                   }
                 }
               ),
@@ -409,13 +419,3 @@ class _UploadScreen extends State<UploadScreen> {
     );
   }
 }
-
-const primaryColor = Color.fromRGBO(243, 191, 3, 1);
-const canvasColor = Color.fromRGBO(246, 193, 3, 1);
-const scaffoldBackgroundColor = Color.fromRGBO(255, 219, 91, 1);
-const accentCanvasColor = Color.fromRGBO(210, 165, 0, 1);
-const white = Colors.white;
-const navyBlue = Color.fromRGBO(31, 38, 46, 1);
-const lightYellow = Color.fromRGBO(255, 246, 225, 1);
-final actionColor = const Color.fromRGBO(246, 193, 3, 1).withOpacity(0.6);
-final divider = Divider(color: navyBlue.withOpacity(0.3), height: 1);
