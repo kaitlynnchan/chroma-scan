@@ -1,5 +1,6 @@
-import 'dart:ffi';
+import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sidebarx/sidebarx.dart';
@@ -60,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
         color: lightYellow,
         child: Row(
           children: [
-            ExampleSidebarX(controller: _controller),
+            _SidebarX(controller: _controller),
             Expanded(
               // Center is a layout widget. It takes a single child and positions it
               // in the middle of the parent
@@ -71,6 +72,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   switch (_controller.selectedIndex) {
                     case 0:
                       return _HomeScreen(title: "ChromaScan");
+                    case 2:
+                      return UploadScreen(title: "Upload Image");
                     default:
                       return Text("data");
                   }
@@ -84,8 +87,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class ExampleSidebarX extends StatelessWidget {
-  const ExampleSidebarX({
+class _SidebarX extends StatelessWidget {
+  const _SidebarX({
     Key? key,
     required SidebarXController controller,
   })  : _controller = controller,
@@ -113,6 +116,7 @@ class ExampleSidebarX extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: canvasColor),
         ),
+        hoverTextStyle: TextStyle(color: navyBlue,),
         selectedItemDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: accentCanvasColor,
@@ -153,16 +157,16 @@ class ExampleSidebarX extends StatelessWidget {
           icon: Icons.home,
           label: 'Home',
           onTap: () {
-            debugPrint('Home');
+            debugPrint('ChromaScan');
           },
         ),
         const SidebarXItem(
-          icon: Icons.search,
-          label: 'Search',
+          icon: Icons.photo_size_select_large,
+          label: 'Select',
         ),
         const SidebarXItem(
-          icon: Icons.people,
-          label: 'People',
+          icon: Icons.upload_file,
+          label: 'Upload',
         ),
       ],
     );
@@ -189,43 +193,37 @@ class _HomeScreen extends StatelessWidget {
             alignment: Alignment.topLeft,
             child: Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 color: canvasColor,
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          Flexible(
-            // name of the colour
-            flex: 1,
-            child: Container(
-              margin: EdgeInsets.only(top: 10),
-              child: LabelBox(label: "Name", text: "White wonderland",)),
+          Container(
+            margin: EdgeInsets.only(top: 10),
+            child: LabelBox(label: "Name", text: "White wonderland",)
           ),
-          Flexible(
-            flex: 1,
-            child: Container(
-              margin: EdgeInsets.only(top: 10),
-              child: const Row(
-                children: [
-                  // hex of the colour
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: LabelBox(label: "HEX", text: "#FFFFFF"),
-                    )
-                  ),
-                  // rgb of the colour
-                  Expanded(child: LabelBox(label: "RGB", text: "255, 255, 255")),
-                ],
-              ),
+          Container(
+            margin: EdgeInsets.only(top: 10),
+            child: const Row(
+              children: [
+                // hex of the colour
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: LabelBox(label: "HEX", text: "#FFFFFF"),
+                  )
+                ),
+                // rgb of the colour
+                Expanded(child: LabelBox(label: "RGB", text: "255, 255, 255")),
+              ],
             ),
           ),
           Flexible(
             flex: 1,
             child: Container(
-              margin: EdgeInsets.only(top: 10),
+              margin: EdgeInsets.only(top: 20),
               child: SizedBox.expand(
                 child: DecoratedBox(
                   decoration: BoxDecoration(
@@ -252,17 +250,9 @@ String _getTitleByIndex(int index) {
     case 0:
       return 'Home';
     case 1:
-      return 'Search';
+      return 'Select';
     case 2:
-      return 'People';
-    case 3:
-      return 'Favorites';
-    case 4:
-      return 'Custom iconWidget';
-    case 5:
-      return 'Profile';
-    case 6:
-      return 'Settings';
+      return 'Upload';
     default:
       return 'Not found page';
   }
@@ -291,6 +281,7 @@ class LabelBox extends StatelessWidget {
         children: [
           Text(label),
           Container(
+            margin: EdgeInsets.only(top: 5),
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
             decoration: BoxDecoration(
               border: Border.all(
@@ -310,6 +301,108 @@ class LabelBox extends StatelessWidget {
                 ),
               ]
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class UploadScreen extends StatefulWidget {
+  const UploadScreen({super.key, required this.title});
+
+  final String title;
+
+  @override
+  State<UploadScreen> createState() => _UploadScreen();
+}
+
+class _UploadScreen extends State<UploadScreen> {
+  String url = "";
+
+  Future<void> _filePicker() async {
+    try{
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['jpg', 'png'],
+      );
+
+      if (result != null) {
+        String filePath = result.files.single.path!;
+        File file = File(filePath);
+        print(filePath);
+        _updateFile(filePath);
+      } else {
+        // User canceled the picker
+      }
+    } catch(_){
+
+    }
+  }
+
+  void _updateFile(String filePath) {
+    setState(() {
+        url = filePath;
+    });
+  }
+
+  void _uploadFile(){
+
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 400,
+      margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
+      child: Column(
+        children: <Widget>[
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              widget.title,
+              style: const TextStyle(
+                color: canvasColor,
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(right: 10),
+                    child: OutlinedButton(
+                      onPressed: _filePicker,
+                      child: Text(url, style: TextStyle(color: navyBlue),),
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(width: 2.0, color: Colors.black,),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                FilledButton(onPressed: _uploadFile, child: const Text('Upload'),
+                  style: FilledButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    backgroundColor: canvasColor,
+                  ),
+                ),
+                
+              ],
+            ),
+          ),
+          Container(
+            height: 200,
+            child: !url.isEmpty ? Image(fit: BoxFit.contain, image: FileImage(File(url)),) : Container(),
           ),
         ],
       ),
