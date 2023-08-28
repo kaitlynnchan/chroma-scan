@@ -1,17 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/api_service.dart';
+import 'package:flutter_app/colour_model.dart';
 
 import '../main.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({
-    Key? key,
-    required String this.title,
-  }) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key, required this.title});
 
   final String title;
 
   @override
+  State<HomeScreen> createState() => _HomeScreen();
+}
+
+class _HomeScreen extends State<HomeScreen> {
+  late List<ColourModel>? _colourModel = [];
+
+  String? name;
+  String? hex;
+  Rgb? rgb;
+
+  void setData() async{
+    _colourModel = (await ApiService().getDominantColour())!;
+    print(_colourModel);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print(url);
+    if(!url.isEmpty) setData();
     return Container(
       width: double.infinity,
       height: 400,
@@ -21,7 +38,7 @@ class HomeScreen extends StatelessWidget {
           Align(
             alignment: Alignment.topLeft,
             child: Text(
-              title,
+              widget.title,
               style: const TextStyle(
                 color: canvasColor,
                 fontSize: 32,
@@ -31,21 +48,21 @@ class HomeScreen extends StatelessWidget {
           ),
           Container(
             margin: EdgeInsets.only(top: 10),
-            child: LabelBox(label: "Name", text: "White wonderland",)
+            child: LabelBox(label: "Name", text: name ?? "",)
           ),
           Container(
             margin: EdgeInsets.only(top: 10),
-            child: const Row(
+            child: Row(
               children: [
                 // hex of the colour
                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.only(right: 10),
-                    child: LabelBox(label: "HEX", text: "#FFFFFF"),
+                    child: LabelBox(label: "HEX", text: hex ?? "",),
                   )
                 ),
                 // rgb of the colour
-                Expanded(child: LabelBox(label: "RGB", text: "255, 255, 255")),
+                Expanded(child: LabelBox(label: "RGB", text: rgb?.toString() ?? "")),
               ],
             ),
           ),
@@ -57,7 +74,7 @@ class HomeScreen extends StatelessWidget {
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     // visible colour
-                    color: Color.fromRGBO(21, 243, 234, 1),
+                    color: Color.fromRGBO(rgb?.red ?? 255, rgb?.green ?? 255, rgb?.blue ?? 255, 1),
                     border: Border.all(
                       color: Colors.black,
                       width: 2,

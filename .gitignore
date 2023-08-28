@@ -4,3 +4,4 @@
 .gitattributes
 __pycache__
 /helpful
+/upload-dir
