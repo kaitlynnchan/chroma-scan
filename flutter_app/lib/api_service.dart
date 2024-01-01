@@ -8,21 +8,21 @@ import 'constants.dart';
 import 'colour_model.dart';
 
 class ApiService {
-  Future<List<ColourModel>?> getDominantColour() async {
+  Future<ColourModel>? getDominantColour() async {
     try {
       String fileUrl = ApiConstants.baseApiCall + fileName + ApiConstants.dominantColour;
       print(fileUrl);
       var url = Uri.parse(ApiConstants.baseUrl + fileUrl);
       var response = await http.get(url);
       if (response.statusCode == 200) {
-        print(response.body);
-        List<ColourModel> _model = colourModelFromJson(response.body);
+        print("Successfully gotten data");
+        ColourModel _model = colourModelFromJson(response.body);
         return _model;
       }
-      return null;
+      throw Error();
     } catch (e) {
-      log(e.toString());
-      return null;
+      log("Error: " + e.toString());
+      throw Error();
     }
   }
 

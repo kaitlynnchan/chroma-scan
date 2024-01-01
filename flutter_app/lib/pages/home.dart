@@ -14,14 +14,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreen extends State<HomeScreen> {
-  late List<ColourModel>? _colourModel = [];
+  late ColourModel? _colourModel = ColourModel.init();
 
-  String? name;
-  String? hex;
-  Rgb? rgb;
-
-  void setData() async{
-    _colourModel = (await ApiService().getDominantColour())!;
+  Future<void> setData() async{
+    _colourModel = await ApiService().getDominantColour();
     print(_colourModel);
   }
 
@@ -48,7 +44,7 @@ class _HomeScreen extends State<HomeScreen> {
           ),
           Container(
             margin: EdgeInsets.only(top: 10),
-            child: LabelBox(label: "Name", text: name ?? "",)
+            child: LabelBox(label: "Name", text: _colourModel!.name,)
           ),
           Container(
             margin: EdgeInsets.only(top: 10),
@@ -58,11 +54,11 @@ class _HomeScreen extends State<HomeScreen> {
                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.only(right: 10),
-                    child: LabelBox(label: "HEX", text: hex ?? "",),
+                    child: LabelBox(label: "HEX", text: _colourModel!.hex,),
                   )
                 ),
                 // rgb of the colour
-                Expanded(child: LabelBox(label: "RGB", text: rgb?.toString() ?? "")),
+                Expanded(child: LabelBox(label: "RGB", text: _colourModel!.rgb.toString())),
               ],
             ),
           ),
@@ -74,7 +70,7 @@ class _HomeScreen extends State<HomeScreen> {
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     // visible colour
-                    color: Color.fromRGBO(rgb?.red ?? 255, rgb?.green ?? 255, rgb?.blue ?? 255, 1),
+                    color: Color.fromRGBO(_colourModel!.rgb.red, _colourModel!.rgb.green, _colourModel!.rgb.blue, 1),
                     border: Border.all(
                       color: Colors.black,
                       width: 2,

@@ -67,8 +67,10 @@ class _UploadScreen extends State<UploadScreen> {
   }
 
   Future<void> _uploadFile() async {
-    await ApiService().uploadFile(url);
-    controller.selectIndex(0);
+    final upload = ApiService().uploadFile(url);
+    upload.then(
+      (value) => controller.selectIndex(0),
+    );
   }
   
   @override
