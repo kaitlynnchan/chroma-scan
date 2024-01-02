@@ -19,8 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.chromascan.api.storage.StorageFileNotFoundException;
 import com.chromascan.api.storage.StorageService;
 import com.chromascan.controller.ImageController;
-import com.chromascan.model.Colour;
-import com.chromascan.model.ColourBreakdown;
+import com.chromascan.model.Color;
+import com.chromascan.model.ColorBreakdown;
 import com.chromascan.model.DataPoint;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,9 +36,9 @@ public class ChromaScanController {
 		this.storageService = storageService;
 	}
 
-	@GetMapping(value = {"/api/file/{filename}/getDominantColour", 
-		"/api/file/{filename}/{datapoints}/getDominantColour"})
-	public ResponseEntity<ColourBreakdown> getDominantColour(@PathVariable(required = true) String filename,
+	@GetMapping(value = {"/api/file/{filename}/getDominantColor", 
+		"/api/file/{filename}/{datapoints}/getDominantColor"})
+	public ResponseEntity<ColorBreakdown> getDominantColor(@PathVariable(required = true) String filename,
 			@PathVariable(required = false) String[] datapoints, HttpServletResponse response) {
 		try {
 			Resource file = storageService.loadAsResource(filename);
@@ -50,7 +50,7 @@ public class ChromaScanController {
 			}
 
 			ic.populateBreakdownArr();
-			ColourBreakdown cb = ic.getDominantColour();
+			ColorBreakdown cb = ic.getDominantColor();
 			
 			response.setStatus(HttpServletResponse.SC_OK);
 			return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
@@ -76,8 +76,8 @@ public class ChromaScanController {
 		return arr;
 	}
 
-	@GetMapping(value = {"/api/file/{filename}/getColourMix", "/api/file/{filename}/{datapoints}/getColourMix"})
-	public ResponseEntity<Colour> getColourMix(@PathVariable(required = true) String filename, 
+	@GetMapping(value = {"/api/file/{filename}/getColorMix", "/api/file/{filename}/{datapoints}/getColorMix"})
+	public ResponseEntity<Color> getColorMix(@PathVariable(required = true) String filename, 
 			@PathVariable(required = false) String[] datapoints, HttpServletResponse response) {
 		try {
 			Resource file = storageService.loadAsResource(filename);
@@ -90,7 +90,7 @@ public class ChromaScanController {
 			}
 
 			ic.populateBreakdownArr();
-			Colour cb = ic.getColourMix();
+			Color cb = ic.getColorMix();
 			
 			response.setStatus(HttpServletResponse.SC_OK);
 			return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,

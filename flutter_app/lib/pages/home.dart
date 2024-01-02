@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/api_service.dart';
-import 'package:flutter_app/colour_model.dart';
+import 'package:flutter_app/color_model.dart';
 
 import '../main.dart';
 
@@ -17,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreen extends State<HomeScreen> {
-  late ColourModel? _colourModel = ColourModel.init();
+  late ColorModel? _colorModel = ColorModel.init();
   late Timer timer;
 
   @override
@@ -33,8 +33,8 @@ class _HomeScreen extends State<HomeScreen> {
   }
   
   Future<void> setData() async{
-    _colourModel = await ApiService().getDominantColour();
-    print(_colourModel);
+    _colorModel = await ApiService().getDominantColor();
+    print(_colorModel);
   }
 
   @override
@@ -43,7 +43,7 @@ class _HomeScreen extends State<HomeScreen> {
     if(!url.isEmpty) setData();
     return Container(
       width: double.infinity,
-      height: 450,
+      height: 500,
       margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
       child: Column(
         children: <Widget>[
@@ -60,21 +60,21 @@ class _HomeScreen extends State<HomeScreen> {
           ),
           Container(
             margin: EdgeInsets.only(top: 10),
-            child: LabelBox(label: "Name", text: _colourModel!.name,)
+            child: LabelBox(label: "Name", text: _colorModel!.name,)
           ),
           Container(
             margin: EdgeInsets.only(top: 10),
             child: Row(
               children: [
-                // hex of the colour
+                // hex of the color
                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.only(right: 10),
-                    child: LabelBox(label: "HEX", text: _colourModel!.hex,),
+                    child: LabelBox(label: "HEX", text: _colorModel!.hex,),
                   )
                 ),
-                // rgb of the colour
-                Expanded(child: LabelBox(label: "RGB", text: _colourModel!.rgb.toString())),
+                // rgb of the color
+                Expanded(child: LabelBox(label: "RGB", text: _colorModel!.rgb.toString())),
               ],
             ),
           ),
@@ -89,7 +89,7 @@ class _HomeScreen extends State<HomeScreen> {
                 FlexBox(label: "Source", imgUrl: url, color: Color.fromRGBO(255,255,255, 0),),
                 const SizedBox(width: 10,),
                 FlexBox(label: "Result", imgUrl: "", color: 
-                  Color.fromRGBO(_colourModel!.rgb.red, _colourModel!.rgb.green, _colourModel!.rgb.blue, 1),
+                  Color.fromRGBO(_colorModel!.rgb.red, _colorModel!.rgb.green, _colorModel!.rgb.blue, 1),
                 ),
               ],
             ),

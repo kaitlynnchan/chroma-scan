@@ -1,30 +1,30 @@
 package com.chromascan.model;
 
 /**
- * COLOUR CLASS
- * Illustrate information about a Colour object.
+ * COLOR CLASS
+ * Illustrate information about a Color object.
  * Creates the hex and comes up with a name from 
  * the rgb value.
  */
-public class Colour {
+public class Color {
 
     private Rgb rgb;
     private String hex;
     private String name;
 
-    public Colour(Rgb rgb){
+    public Color(Rgb rgb){
         this.rgb = rgb;
         setHex();
         setName();
     }
 
-    public Colour(Rgb rgb, String hex){
+    public Color(Rgb rgb, String hex){
         this.rgb = rgb;
         this.hex = hex;
         this.name = "";
     }
 
-    public Colour(Rgb rgb, String hex, String name){
+    public Color(Rgb rgb, String hex, String name){
         this.rgb = rgb;
         this.hex = hex;
         this.name = name;
@@ -56,7 +56,7 @@ public class Colour {
 
     /**
      * Creates openai wrapper object to come up 
-     * with a name for the colour
+     * with a name for the color
      */
     private void setName(){
         // TEMP: remove openai due to service limitations
@@ -69,7 +69,7 @@ public class Colour {
 
     @Override
     public String toString() {
-        return "Colour [rgb=" + rgb + ", hex=" + hex + ", name=" + name + "]";
+        return "Color [rgb=" + rgb + ", hex=" + hex + ", name=" + name + "]";
     }
     
 }

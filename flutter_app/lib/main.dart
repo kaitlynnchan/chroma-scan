@@ -281,7 +281,7 @@ class FlexBox extends StatelessWidget {
               margin: EdgeInsets.only(top: 5),
               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               decoration: BoxDecoration(
-                // visible colour
+                // visible color
                 color: color!,
                 image: DecorationImage(
                   image: FileImage(File(imgUrl!)),

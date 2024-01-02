@@ -1,16 +1,16 @@
 package com.chromascan.model;
 
 /**
- * COLOUR BREAKDOWN CLASS
- * Extends from Colour Class to include the
- * percentage of how much the colour covers
+ * COLOR BREAKDOWN CLASS
+ * Extends from Color Class to include the
+ * percentage of how much the color covers
  * the image.
  */
-public class ColourBreakdown extends Colour {
+public class ColorBreakdown extends Color {
 
     private double percentage; // [0-100]
 
-    public ColourBreakdown(Rgb rgb, double percentage){
+    public ColorBreakdown(Rgb rgb, double percentage){
         super(rgb);
         this.percentage = percentage;
     }
@@ -21,7 +21,7 @@ public class ColourBreakdown extends Colour {
 
     @Override
     public String toString() {
-        return "ColourBreakdown [rgb=" + getRgb() 
+        return "ColorBreakdown [rgb=" + getRgb() 
             + ", hex=" + getHex()
             + ", name=" + getName()
             + ", percentage=" + percentage + "%"
