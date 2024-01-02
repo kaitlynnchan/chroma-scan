@@ -72,13 +72,13 @@ public class ChromaScanControllerTest {
 	}
 
     @Test
-	public void successGetDominantColour() throws Exception {
+	public void successGetDominantColor() throws Exception {
 		// assert that the resource exists in storage service
 		ClassPathResource resource = new ClassPathResource("test-img4.png", getClass());
 		given(this.storageService.loadAsResource("test-img4.png")).willReturn(resource);
 
 		// api endpoint
-		String url = "/api/file/{filename}/getDominantColour";
+		String url = "/api/file/{filename}/getDominantColor";
 		ResponseEntity<String> response = this.restTemplate
 			.getForEntity(url, String.class, "test-img4.png");
 
@@ -99,13 +99,13 @@ public class ChromaScanControllerTest {
 	}
 
 	@Test
-	public void successDataPointsDominantColour() throws Exception {
+	public void successDataPointsDominantColor() throws Exception {
 		// assert that the resource exists in storage service
 		ClassPathResource resource = new ClassPathResource("test-img5.png", getClass());
 		given(this.storageService.loadAsResource("test-img5.png")).willReturn(resource);
 
 		// api endpoint
-		String url = "/api/file/{filename}/{datapoints}/getDominantColour";
+		String url = "/api/file/{filename}/{datapoints}/getDominantColor";
 		String datapoints = "10, 500, 358, 285, 600, 10";
 		ResponseEntity<String> response = this.restTemplate
 			.getForEntity(url, String.class, "test-img5.png", datapoints);
@@ -127,13 +127,13 @@ public class ChromaScanControllerTest {
 	}
 	
     @Test
-	public void successGetColourMix() throws Exception {
+	public void successGetColorMix() throws Exception {
 		// assert that the resource exists in storage service
 		ClassPathResource resource = new ClassPathResource("test-img4.png", getClass());
 		given(this.storageService.loadAsResource("test-img4.png")).willReturn(resource);
 
 		// api endpoint
-		String url = "/api/file/{filename}/getColourMix";
+		String url = "/api/file/{filename}/getColorMix";
 		ResponseEntity<String> response = this.restTemplate
 			.getForEntity(url, String.class, "test-img4.png");
 

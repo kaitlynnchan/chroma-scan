@@ -7,40 +7,40 @@ import java.util.Iterator;
 import com.chromascan.model.*;
 
 /**
- * COLOUR EVALUATOR CLASS
+ * COLOR EVALUATOR CLASS
  * Given a image and pixel positions, this class 
- * will find the colours in the image.
+ * will find the colors in the image.
  */
 public class ImageController {
 
-    private static final int NUM_TOP_COLOURS = 3;
+    private static final int NUM_TOP_COLORS = 3;
 
     private Image imgObj;
     private ArrayList<DataPoint> dp;
-    private ArrayList<ColourBreakdown> cb; // most dominant to least dominant
+    private ArrayList<ColorBreakdown> cb; // most dominant to least dominant
 
     public ImageController(File file){
         this.imgObj = new Image(file);
         this.dp = null;
-        this.cb = new ArrayList<ColourBreakdown>();
+        this.cb = new ArrayList<ColorBreakdown>();
     }
 
     public ImageController(String file){
         this.imgObj = new Image(file);
         this.dp = null;
-        this.cb = new ArrayList<ColourBreakdown>();
+        this.cb = new ArrayList<ColorBreakdown>();
     }
     
     public ImageController(File file, ArrayList<DataPoint> dp){
         this.imgObj = new Image(file);
         this.dp = validateDataPoints(dp);
-        this.cb = new ArrayList<ColourBreakdown>();
+        this.cb = new ArrayList<ColorBreakdown>();
     }
 
     public ImageController(String file, ArrayList<DataPoint> dp){
         this.imgObj = new Image(file);
         this.dp = validateDataPoints(dp);
-        this.cb = new ArrayList<ColourBreakdown>();
+        this.cb = new ArrayList<ColorBreakdown>();
     }
 
     public Image getImage() {
@@ -51,28 +51,28 @@ public class ImageController {
         return this.dp;
     }
 
-    public ArrayList<ColourBreakdown> getColourBreakdowns() {
+    public ArrayList<ColorBreakdown> getColorBreakdowns() {
         return this.cb;
     }
 
-    public ColourBreakdown getDominantColour(){
+    public ColorBreakdown getDominantColor(){
         return cb.get(0);
     }
 
     /**
-     * Finds the colour that is a mix of all
-     * the colours in colour breakdown.
-     * @return mixed colour object
+     * Finds the color that is a mix of all
+     * the colors in color breakdown.
+     * @return mixed color object
      */
-    public Colour getColourMix(){
+    public Color getColorMix(){
         // sum of all the percentages
         Rgb mix = new Rgb(0, 0, 0);
         Double total = cb.stream()
             .mapToDouble(c -> c.getPercentage())
             .sum();
 
-        // multiply each colour by the new ratio
-        for(ColourBreakdown b : cb){
+        // multiply each color by the new ratio
+        for(ColorBreakdown b : cb){
             Double ratio = b.getPercentage() / total;
             int red = (int) Math.round(b.getRgb().getRed() * ratio);
             int green = (int) Math.round(b.getRgb().getGreen() * ratio);
@@ -82,7 +82,7 @@ public class ImageController {
             mix.setGreen(mix.getGreen() + green);
             mix.setBlue(mix.getBlue() + blue);
         }
-        return new Colour(mix);
+        return new Color(mix);
     }
 
     /**
@@ -105,7 +105,7 @@ public class ImageController {
     }
 
     /**
-     * Fills the breakdown array with the colours
+     * Fills the breakdown array with the colors
      * in the image
      */
     public void populateBreakdownArr(){
@@ -114,32 +114,32 @@ public class ImageController {
             while(positions.hasNext()){
                 DataPoint p = positions.next();
                 Rgb rgbObj = this.imgObj.getRgbObject(p.getX(), p.getY());
-                addColourBreakdown(rgbObj);
+                addColorBreakdown(rgbObj);
             }
         } else{
-            // get the top colours
-            for(int i = 1; i <= NUM_TOP_COLOURS; i++){
+            // get the top colors
+            for(int i = 1; i <= NUM_TOP_COLORS; i++){
                 Rgb rgbObj = this.imgObj.getTopNRgb(i);
                 if(rgbObj == null){
                     break;
                 }
-                addColourBreakdown(rgbObj);
+                addColorBreakdown(rgbObj);
             }
         }
     }
 
     /**
-     * Add the colour breakdown object to the
+     * Add the color breakdown object to the
      * arraylist from a given rgb.
      * @param rgbObj rgb to add to arraylist
      */
-    private void addColourBreakdown(Rgb rgbObj){
+    private void addColorBreakdown(Rgb rgbObj){
         long count = this.imgObj.getNumMatching(rgbObj);
         int size = this.imgObj.getSize();
-        ColourBreakdown breakdown = new ColourBreakdown(rgbObj, count * 100 / size);
+        ColorBreakdown breakdown = new ColorBreakdown(rgbObj, count * 100 / size);
         System.out.println(breakdown);
 
-        // add new colour into the right position (highest percentage to lowest)
+        // add new color into the right position (highest percentage to lowest)
         for(int i = 0; i < this.cb.size(); i++){
             if(this.cb.get(i).getPercentage() == breakdown.getPercentage()){
                 this.cb.add(i, breakdown);

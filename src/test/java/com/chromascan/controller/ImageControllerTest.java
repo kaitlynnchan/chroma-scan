@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import com.chromascan.model.Colour;
-import com.chromascan.model.ColourBreakdown;
+import com.chromascan.model.Color;
+import com.chromascan.model.ColorBreakdown;
 import com.chromascan.model.DataPoint;
 
 import static org.junit.Assert.assertNotNull;
@@ -31,7 +31,7 @@ public class ImageControllerTest {
         );
         ic.populateBreakdownArr();
 
-        ColourBreakdown cb = ic.getDominantColour();
+        ColorBreakdown cb = ic.getDominantColor();
         assertAll(
             () -> assertEquals("#C2ED6D", cb.getHex()),
             () -> assertEquals(194, cb.getRgb().getRed()),
@@ -74,7 +74,7 @@ public class ImageControllerTest {
         );
         ic.populateBreakdownArr();
 
-        ColourBreakdown cb = ic.getDominantColour();
+        ColorBreakdown cb = ic.getDominantColor();
         assertAll(
             () -> assertEquals("#FFCC8D", cb.getHex()),
             () -> assertEquals(255, cb.getRgb().getRed()),
@@ -87,12 +87,12 @@ public class ImageControllerTest {
     }
 
     @Test
-    public void successOnColourMix(){
-        System.out.println("====== successOnColourMix ======");
+    public void successOnColorMix(){
+        System.out.println("====== successOnColorMix ======");
         ic = new ImageController("test-img3.png");
         ic.populateBreakdownArr();
 
-        Colour mix = ic.getColourMix();
+        Color mix = ic.getColorMix();
         assertAll(
             () -> assertEquals("#FFC179", mix.getHex()),
             () -> assertEquals(255, mix.getRgb().getRed()),

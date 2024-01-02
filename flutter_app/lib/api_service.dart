@@ -5,18 +5,18 @@ import 'package:flutter_app/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'constants.dart';
-import 'colour_model.dart';
+import 'color_model.dart';
 
 class ApiService {
-  Future<ColourModel>? getDominantColour() async {
+  Future<ColorModel>? getDominantColor() async {
     try {
-      String fileUrl = ApiConstants.baseApiCall + fileName + ApiConstants.dominantColour;
+      String fileUrl = ApiConstants.baseApiCall + fileName + ApiConstants.dominantColor;
       print(fileUrl);
       var url = Uri.parse(ApiConstants.baseUrl + fileUrl);
       var response = await http.get(url);
       if (response.statusCode == 200) {
         print("Successfully gotten data");
-        ColourModel _model = colourModelFromJson(response.body);
+        ColorModel _model = colorModelFromJson(response.body);
         return _model;
       }
       throw Error();

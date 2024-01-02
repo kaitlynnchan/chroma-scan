@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:screen_capturer/screen_capturer.dart';
 
 import '../main.dart';
-import '../colour_model.dart';
+import '../color_model.dart';
 import '../api_service.dart';
 
 class UploadScreen extends StatefulWidget {
@@ -20,7 +20,7 @@ class UploadScreen extends StatefulWidget {
 }
 
 class _UploadScreen extends State<UploadScreen> {
-  late List<ColourModel>? _colourModel = [];
+  late List<ColorModel>? _colorModel = [];
 
   Future<void> _screenCapture() async{
     Directory directory = await getApplicationDocumentsDirectory();

@@ -1,13 +1,13 @@
 import 'dart:convert';
     
-ColourModel colourModelFromJson(String str) =>
-    ColourModel.fromJson((json.decode(str) as Map<String, dynamic>));
+ColorModel colorModelFromJson(String str) =>
+    ColorModel.fromJson((json.decode(str) as Map<String, dynamic>));
 
-String colourModelToJson(List<ColourModel> data) =>
+String colorModelToJson(List<ColorModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class ColourModel {
-  ColourModel({
+class ColorModel {
+  ColorModel({
     required this.rgb,
     required this.hex,
     required this.name,
@@ -17,13 +17,13 @@ class ColourModel {
   String hex;
   String name;
 
-  factory ColourModel.init() => ColourModel(
+  factory ColorModel.init() => ColorModel(
         rgb: Rgb.init(),
         hex: "",
         name: "",
       );
 
-  factory ColourModel.fromJson(Map<String, dynamic> json) => ColourModel(
+  factory ColorModel.fromJson(Map<String, dynamic> json) => ColorModel(
         rgb: Rgb.fromJson(json["rgb"]),
         hex: json["hex"],
         name: json["name"],

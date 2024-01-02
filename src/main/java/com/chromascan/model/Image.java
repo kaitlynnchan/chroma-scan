@@ -16,7 +16,7 @@ public class Image {
 
     private BufferedImage image;
     private Rgb arr[][];
-    private List<Map.Entry<String,Long>> imgColours;
+    private List<Map.Entry<String,Long>> imgColors;
     private int width;
     private int height;
 
@@ -52,8 +52,8 @@ public class Image {
         return width * height;
     }
 
-    public int getTotalNumColours(){
-        return imgColours.size();
+    public int getTotalNumColors(){
+        return imgColors.size();
     }
     
     public Rgb getRgbObject(int x, int y){
@@ -62,34 +62,34 @@ public class Image {
 
     /**
      * Finds the rgb object that matches with comp
-     * within the image colours list and returns how
-     * many pixels have this rgb colour.
+     * within the image colors list and returns how
+     * many pixels have this rgb color.
      * @param comp  Rgb to find
      * @return      Number of values matching comp
      */
     public long getNumMatching(Rgb comp){
-        Iterator<Map.Entry<String,Long>> iterator = this.imgColours.iterator();
+        Iterator<Map.Entry<String,Long>> iterator = this.imgColors.iterator();
         while(iterator.hasNext()){
-            Map.Entry<String,Long> colour = iterator.next();
-            if(colour.getKey().equals(comp.toString())){
-                return colour.getValue();
+            Map.Entry<String,Long> color = iterator.next();
+            if(color.getKey().equals(comp.toString())){
+                return color.getValue();
             }
         }
         return 0;
     }
 
     /**
-     * Finds the top n number of colours in the 
+     * Finds the top n number of colors in the 
      * image. If n is more than the total number of 
-     * colours, returns the last val.
+     * colors, returns the last val.
      * @param n top n number to return
      * @return  Rgb object of the top number
      */
     public Rgb getTopNRgb(int n){
-        if(n > getTotalNumColours()){
+        if(n > getTotalNumColors()){
             return null;
         }
-        return parseStringToRgb(imgColours.get(n-1).getKey());
+        return parseStringToRgb(imgColors.get(n-1).getKey());
     }
 
     /**
@@ -146,7 +146,7 @@ public class Image {
      * image and returns the object.
      * @param x horizontal position
      * @param y vertical position
-     * @return  Rgb object with colours
+     * @return  Rgb object with colors
      */
     private Rgb getRgbFromPosition(int x, int y){
         int pixel = this.image.getRGB(x, y);
@@ -155,13 +155,13 @@ public class Image {
     }
 
     /**
-     * Fills the imageColours list with the grouped
-     * and sorted array of all the colours in the
+     * Fills the imageColors list with the grouped
+     * and sorted array of all the colors in the
      * image along with the number of matching values.
      */
     private void sortArr(){
         List<Rgb[]> list = Arrays.asList(this.arr);
-        this.imgColours = list.stream()
+        this.imgColors = list.stream()
             .flatMap(Arrays::stream)
             .collect(
                 Collectors.groupingBy(
