@@ -59,10 +59,12 @@ public class Colour {
      * with a name for the colour
      */
     private void setName(){
-        OpenAiWrapper wrapper = new OpenAiWrapper(1.0, 20);
-        wrapper.addMessage("system", "You are a creative assistant.");
-        wrapper.addMessage("user", "Come up with a fun name that describes the color " + this.hex + ".");
-        this.name = wrapper.getChatCompletionRequestContent();
+        // TEMP: remove openai due to service limitations
+        // OpenAiWrapper wrapper = new OpenAiWrapper(1.0, 20);
+        // wrapper.addMessage("system", "You are a creative assistant.");
+        // wrapper.addMessage("user", "Come up with a fun name that describes the color " + this.hex + ".");
+        // this.name = wrapper.getChatCompletionRequestContent();
+        this.name = "";
     }
 
     @Override

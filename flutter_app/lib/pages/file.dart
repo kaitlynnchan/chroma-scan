@@ -2,10 +2,13 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/pages/home.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screen_capturer/screen_capturer.dart';
 
 import '../main.dart';
+import '../colour_model.dart';
+import '../api_service.dart';
 
 class UploadScreen extends StatefulWidget {
   const UploadScreen({super.key, required this.title});
@@ -17,7 +20,7 @@ class UploadScreen extends StatefulWidget {
 }
 
 class _UploadScreen extends State<UploadScreen> {
-  String url = "";
+  late List<ColourModel>? _colourModel = [];
 
   Future<void> _screenCapture() async{
     Directory directory = await getApplicationDocumentsDirectory();
@@ -31,7 +34,8 @@ class _UploadScreen extends State<UploadScreen> {
     );
     print(capturedData);
     if(capturedData != null){
-      _updateFile(capturedData.imagePath ?? "");
+      File f = new File(imagePath);
+      _updateFile(capturedData.imagePath ?? "", f.path.split(Platform.pathSeparator).last);
     }
   }
 
@@ -46,7 +50,7 @@ class _UploadScreen extends State<UploadScreen> {
         String filePath = result.files.single.path!;
         File file = File(filePath);
         print(filePath);
-        _updateFile(filePath);
+        _updateFile(filePath, result.files.single.name);
       } else {
         // User canceled the picker
       }
@@ -55,14 +59,18 @@ class _UploadScreen extends State<UploadScreen> {
     }
   }
 
-  void _updateFile(String filePath) {
+  void _updateFile(String filePath, String name) {
     setState(() {
         url = filePath;
+        fileName = name;
     });
   }
 
-  void _uploadFile(){
-
+  Future<void> _uploadFile() async {
+    final upload = ApiService().uploadFile(url);
+    // upload.then(
+    //   (value) => controller.selectIndex(0),
+    // );
   }
   
   @override

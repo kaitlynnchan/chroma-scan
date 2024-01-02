@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sidebarx/sidebarx.dart';
@@ -14,6 +16,10 @@ const navyBlue = Color.fromRGBO(31, 38, 46, 1);
 const lightYellow = Color.fromRGBO(255, 246, 225, 1);
 final actionColor = const Color.fromRGBO(246, 193, 3, 1).withOpacity(0.6);
 final divider = Divider(color: navyBlue.withOpacity(0.3), height: 1);
+
+String url = "";
+String fileName = "";
+SidebarXController controller = SidebarXController(selectedIndex: 0, extended: true);
 
 void main() {
   runApp(const MyApp());
@@ -56,7 +62,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _controller = SidebarXController(selectedIndex: 0, extended: true);
   
   @override
   Widget build(BuildContext context) {
@@ -71,23 +76,23 @@ class _MyHomePageState extends State<MyHomePage> {
         color: lightYellow,
         child: Row(
           children: [
-            _SidebarX(controller: _controller),
+            _SidebarX(controller: controller),
             Expanded(
               // Center is a layout widget. It takes a single child and positions it
               // in the middle of the parent
               child: AnimatedBuilder(
-                animation: _controller,
+                animation: controller,
                 builder: (context, child) {
-                  // final pageTitle = _getTitleByIndex(_controller.selectedIndex);
-                  switch (_controller.selectedIndex) {
+                  final String pageTitle = _getTitleByIndex(controller.selectedIndex);
+                  switch (controller.selectedIndex) {
                     case 0:
-                      return HomeScreen(title: "ChromaScan");
+                      return HomeScreen(title: pageTitle);
                     case 1:
-                      return UploadScreen(title: "Select");
+                      return UploadScreen(title: pageTitle);
                     case 2:
-                      return UploadScreen(title: "Upload Image");
+                      return UploadScreen(title: pageTitle);
                     default:
-                      return HomeScreen(title: "ChromaScan");
+                      return HomeScreen(title: pageTitle);
                   }
                 }
               ),
@@ -188,11 +193,11 @@ class _SidebarX extends StatelessWidget {
 String _getTitleByIndex(int index) {
   switch (index) {
     case 0:
-      return 'Home';
+      return 'ChromaScan';
     case 1:
-      return 'Select';
+      return 'Selection';
     case 2:
-      return 'Upload';
+      return 'Upload File';
     default:
       return 'Not found page';
   }
@@ -242,6 +247,54 @@ class LabelBox extends StatelessWidget {
               ]
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class FlexBox extends StatelessWidget {
+  const FlexBox({
+    super.key,
+    this.label,
+    this.imgUrl,
+    this.color,
+  });
+
+  final String? label;
+  final String? imgUrl;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      flex: 2,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height:10),
+          Text(label!),
+          Flexible(
+            flex: 2,
+            fit: FlexFit.tight,
+            child: Container(
+              margin: EdgeInsets.only(top: 5),
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              decoration: BoxDecoration(
+                // visible colour
+                color: color!,
+                image: DecorationImage(
+                  image: FileImage(File(imgUrl!)),
+                  fit: BoxFit.contain,
+                ),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ), 
         ],
       ),
     );
