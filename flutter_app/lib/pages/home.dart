@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/api_service.dart';
 import 'package:flutter_app/colour_model.dart';
@@ -15,7 +18,20 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreen extends State<HomeScreen> {
   late ColourModel? _colourModel = ColourModel.init();
+  late Timer timer;
 
+  @override
+  void initState() {
+    timer = Timer.periodic(Duration(seconds: 1), (_) {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+  }
+  
   Future<void> setData() async{
     _colourModel = await ApiService().getDominantColour();
     print(_colourModel);
@@ -27,7 +43,7 @@ class _HomeScreen extends State<HomeScreen> {
     if(!url.isEmpty) setData();
     return Container(
       width: double.infinity,
-      height: 400,
+      height: 450,
       margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
       child: Column(
         children: <Widget>[
@@ -62,23 +78,20 @@ class _HomeScreen extends State<HomeScreen> {
               ],
             ),
           ),
+
+          
           Flexible(
-            flex: 1,
-            child: Container(
-              margin: EdgeInsets.only(top: 20),
-              child: SizedBox.expand(
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    // visible colour
-                    color: Color.fromRGBO(_colourModel!.rgb.red, _colourModel!.rgb.green, _colourModel!.rgb.blue, 1),
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(10)
-                  ),
+            flex: 2,
+            fit: FlexFit.tight,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                FlexBox(label: "Source", imgUrl: url, color: Color.fromRGBO(255,255,255, 0),),
+                const SizedBox(width: 10,),
+                FlexBox(label: "Result", imgUrl: "", color: 
+                  Color.fromRGBO(_colourModel!.rgb.red, _colourModel!.rgb.green, _colourModel!.rgb.blue, 1),
                 ),
-              ),
+              ],
             ),
           ),
         ],

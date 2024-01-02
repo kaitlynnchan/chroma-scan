@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sidebarx/sidebarx.dart';
@@ -245,6 +247,54 @@ class LabelBox extends StatelessWidget {
               ]
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class FlexBox extends StatelessWidget {
+  const FlexBox({
+    super.key,
+    this.label,
+    this.imgUrl,
+    this.color,
+  });
+
+  final String? label;
+  final String? imgUrl;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      flex: 2,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height:10),
+          Text(label!),
+          Flexible(
+            flex: 2,
+            fit: FlexFit.tight,
+            child: Container(
+              margin: EdgeInsets.only(top: 5),
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              decoration: BoxDecoration(
+                // visible colour
+                color: color!,
+                image: DecorationImage(
+                  image: FileImage(File(imgUrl!)),
+                  fit: BoxFit.contain,
+                ),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ), 
         ],
       ),
     );
