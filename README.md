@@ -1,5 +1,11 @@
 # ChromaScan
 
+## Testing
+
+Navigate to the `ChromaScanController.java` file and run it using an IDE. This will initialize the springboot server.
+
+Navigate to the `flutter_app` directory and run `flutter run` in the terminal. This will build and start the flutter app which this application is built on.
+
 ## Project Overview
 ### Problem Statement and Goals
 
@@ -28,11 +34,11 @@ I will NOT create the desktop application from scratch: I will follow tutorials 
 
 | Milestone | Time spent | Due Date | Description |
 | -- | -- | -- | -- |
-| Milestone 0 | 1 week | 2023-07-25 | - Create backend design and be able to evaluate the Color based on a small source image <br>- Integrate openAI API to come up with a fun name for the Color <break> - create unit tests |
-| Milestone 1 | 1 week |  | - Develop algorithm to find the complimenting Color in a source image
-| Milestone 3 | 1-2 days |  | - Develop API using SpringBoot to send the image from the frontend to backend |
-| Milestone 4 | 1 week |  | - Design and develop frontend using flutter |
-| Milestone 5 | 1 week |  | - Attach api to frontend |
+| Milestone 0 | 1 week | 2023-08-08 | - Create backend design and be able to evaluate the Color based on a small source image <br>- Integrate openAI API to come up with a fun name for the Color <break> - create unit tests |
+| Milestone 1 | 1 week | 2023-08-13 | - Develop algorithm to find the complimenting Color in a source image
+| Milestone 3 | 1-2 days | 2023-08-25 | - Develop API using SpringBoot to send the image from the frontend to backend |
+| Milestone 4 | 1 week | 2023-08-27 | - Design and develop frontend using flutter |
+| Milestone 5 | 2 week | 2024-01-01 | - Attach api to frontend |
 
 
 ## High Level Technical Design
